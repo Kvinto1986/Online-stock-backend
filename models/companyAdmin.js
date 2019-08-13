@@ -6,14 +6,14 @@ const CompanyAdminSchema = new Schema({
         type: String,
         required: true
     },
-    login: {
-        type: String,
-        required: true        
-    },
     email: {
         type: String
     },
     password: {
+        type: String,
+        required: true
+    },
+    company: {
         type: String,
         required: true
     },

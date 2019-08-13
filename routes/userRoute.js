@@ -1,11 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const gravatar = require('gravatar');
-const nodemailer = require('nodemailer');
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const passport = require('passport');
 
 const MainAdmin = require('../models/AdminModel');
 

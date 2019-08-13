@@ -10,35 +10,30 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    fathename: {
+    fathername: {
         type: String,
         required: true
     },
-    address: {
-        city: {
-            type: String,
-            required: true
-        },
-        street: {
-            type: String,
-            required: true
-        },
-        build: {
-            type: Number,
-            required: true
-        },
-        flat: {
-            type: number,
-            required: true
-        },
+    city: {
+        type: String,
+        required: true
     },
+    street: {
+        type: String,
+        required: true
+    },
+    build: {
+        type: Number,
+        required: true
+    },
+    flat: {
+        type: Number,
+        required: true
+    },
+
     role: {
         type: String,
         required: true
-    },
-    login: {
-        type: String,
-        required: true        
     },
     email: {
         type: String
