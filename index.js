@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const{port, baseUri} = require('./dbconfig');
 const mongoose = require("mongoose");
-const Admin = require('./models/mainAdmin');
+
 
 const users = require('./routes/userRoute');
 
@@ -13,6 +13,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
 
 app.use('/api/rootadmins', users);
+
 
 mongoose.connect(baseUri, {useNewUrlParser: true}, (err) => {
     if(err) return console.error(err);
