@@ -4,10 +4,15 @@ const cors = require('cors');
 const{port, baseUri} = require('./dbconfig');
 const mongoose = require("mongoose");
 
+const users = require('./routes/userRoute');
+
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
+
+app.use('/api/rootadmins', users);
+
 
 mongoose.connect(baseUri, {useNewUrlParser: true}, (err) => {
     if(err) return console.error(err);
@@ -18,5 +23,5 @@ mongoose.connect(baseUri, {useNewUrlParser: true}, (err) => {
         }
         console.log(`Server up on ${port}`)
     })
-    
-} )
+
+} );
