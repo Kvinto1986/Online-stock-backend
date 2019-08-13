@@ -9,10 +9,7 @@ router.post('/login', (req, res) => {
 
     MainAdmin.findOne({email: req.body.email})
         .then(user => {
-            console.log(user)
-            console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
             if (user) {
-
                 return res.json(user)
             }
 

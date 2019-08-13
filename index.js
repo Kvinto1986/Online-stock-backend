@@ -5,15 +5,14 @@ const{port, baseUri} = require('./dbconfig');
 const mongoose = require("mongoose");
 
 
-const users = require('./routes/userRoute');
+const allUsers = require('./routes/allUsers');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
 
-app.use('/api/rootadmins', users);
-
+app.use('/api/allUsers', allUsers);
 
 mongoose.connect(baseUri, {useNewUrlParser: true}, (err) => {
     if(err) return console.error(err);
