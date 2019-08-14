@@ -1,7 +1,6 @@
 const User = require('../models/users');
 //TODO refactoring code and test request
 exports.getAllUsers = (req, res) => {
-    res.send('asds');
     User.find({}, (users) => {
         res.send(users)
     })
