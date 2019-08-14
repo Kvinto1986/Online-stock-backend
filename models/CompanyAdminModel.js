@@ -25,6 +25,6 @@ const CompanyAdminSchema = new Schema({
 
 });
 
-const CompanyAdmin = mongoose.model('companyAdmin', CompanyAdminSchema);
+const CompanyAdminModel = mongoose.model('companyAdmin', CompanyAdminSchema);
 
-module.exports = CompanyAdmin;
+module.exports = CompanyAdminModel;
