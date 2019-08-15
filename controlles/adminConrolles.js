@@ -1,6 +1,6 @@
 const CompanyAdmin = require('../models/CompanyAdminModel');
 const bcrypt = require('bcryptjs');
-const validateUserInput = require('../validation/adminValidation');
+const validateAdminInput = require('../validation/adminValidation');
 
 
 exports.getAllAdmins = (req, res) => {
@@ -20,7 +20,7 @@ exports.getAdmin = (req, res) => {
 
 exports.addAdmin = (req, res) => {
 
-    const {errors, isValid} = validateUserInput(req.body);
+    const {errors, isValid} = validateAdminInput(req.body);
 
     if (!isValid) {
         return res.status(400).json(errors);
