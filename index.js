@@ -3,11 +3,10 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const{port, baseUri} = require('./dbconfig');
 const mongoose = require("mongoose");
-
 const allUsers = require('./routes/allUsersRoute');
-
 const app = express();
 const adminRoute = require('./models/CompanyAdminModel');
+const carrierRoute = require('./routes/carrierRoute')
 const driver = require('./routes/driverRoute');
 
 app.use(bodyParser.json());
@@ -17,7 +16,7 @@ app.use(cors());
 app.use('/api/allUsers', allUsers);
 app.use('/api/drivers/', driver)
 app.use('/api/admins', adminRoute);
-app.use('/api/admin', admin);
+app.use('/api/carriers', carrierRoute);
 
 
 mongoose.connect(baseUri, {useNewUrlParser: true}, (err) => {
