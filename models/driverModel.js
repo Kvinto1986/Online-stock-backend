@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const MainAdminSchema = new Schema({
-    role: {
-        type: String,
-        required: true
-    },
+const driverScheema = new Schema({
     email: {
         type: String
     },
-    password: {
+    name: {
+        type: String,
+        required: true
+    },
+    surname: {
         type: String,
         required: true
     },
@@ -20,6 +20,6 @@ const MainAdminSchema = new Schema({
 
 });
 
-const MainAdmin = mongoose.model('rootAdmin', MainAdminSchema);
+const Driver = mongoose.model('driver', driverScheema);
 
-module.exports = MainAdmin;
+module.exports = Driver;

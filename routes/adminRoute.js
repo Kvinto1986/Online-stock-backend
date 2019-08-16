@@ -4,7 +4,7 @@ const {getAllAdmins, getAdmin, addAdmin, deleteAdmin, changeAdmin} = require('..
 
 adminRouter.get('/', getAllAdmins);
 adminRouter.get('/:id', getAdmin);
-adminRouter.post('/addAdmin', addAdmin);
+adminRouter.post('/registration', addAdmin);
 adminRouter.delete('/:id', deleteAdmin);
 adminRouter.put('/:id', changeAdmin);
 

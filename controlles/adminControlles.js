@@ -1,4 +1,7 @@
-const CompanyAdmin = require('../models/companyAdmin');
+const CompanyAdmin = require('../models/CompanyAdminModel');
+const bcrypt = require('bcryptjs');
+const validateAdminInput = require('../validation/adminValidation');
+
 
 exports.getAllAdmins = (req, res) => {
     CompanyAdmin.find({}, (admins) => {
@@ -16,26 +19,50 @@ exports.getAdmin = (req, res) => {
 };
 
 exports.addAdmin = (req, res) => {
-    const{
-        role,
-        email,
-        password,
-        date,
-        company
-    } = req.body;
 
-    CompanyAdmin.create({
-        role: role,
-        email: email,
-        password: password,
-        date: date,
-        company: company
-    }, (err, admin) => {
-        if(err) return console.error(err);
-        console.log(`Object ${admin} was save`);
-        res.send(admin)
-    })
-};
+    const {errors, isValid} = validateAdminInput(req.body);
+
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    CompanyAdmin.findOne({
+        email: req.body.email
+    }).then(admin => {
+        if (admin) {
+            return res.status(400).json({
+                email: 'Email already exists'
+            });
+        } else {
+
+            const newCompanyAdmin = new CompanyAdmin({
+                role: req.body.role,
+                company: req.body.company,
+                email: req.body.email,
+                password: req.body.password,
+            });
+
+            bcrypt.genSalt(10, (err, salt) => {
+                if (err) console.error('There was an error', err);
+                else {
+                    bcrypt.hash(newCompanyAdmin.password, salt, (err, hash) => {
+                        if (err) console.error('There was an error', err);
+                        else {
+                            newCompanyAdmin.password = hash;
+                            newCompanyAdmin
+                                .save()
+                                .then(user => {
+                                    res.json(user)
+                                });
+                        }
+                    });
+                }
+            });
+            res.json(admin)
+        }
+    });
+}
+
 
 exports.deleteAdmin = (req, res) => {
     const{id} = req.params;

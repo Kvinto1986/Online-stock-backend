@@ -59,6 +59,7 @@ router.post('/login', (req, res) => {
 
         if (userArr.length > 0) {
             const user = userArr[0];
+
             bcrypt.compare(password, user.password)
                 .then(isMatch => {
                     if (isMatch) {
