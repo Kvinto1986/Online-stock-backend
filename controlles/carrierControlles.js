@@ -8,14 +8,14 @@ exports.addCarrier = (req, res) => {
         company: company
     }, (err, carrier) => {
         if(err) return console.error(err);
-        console.error(`${carrier} added to base`);
+        console.log(`${carrier} added to base`);
         res.send(carrier);
     })
 }
 
  exports.findCarrier = (req, res) => {
-   const{id} = req.body;
-   Carrier.findOne({_id: id}, (err, carrier) => {
+    const{company} = req.params;
+   Carrier.findOne({company: company}, (err, carrier) => {
        if(err) return console.error(err);
        res.send(carrier);
    })
