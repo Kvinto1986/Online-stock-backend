@@ -2,21 +2,58 @@ const CompanyAdmin = require('../models/CompanyAdminModel');
 const bcrypt = require('bcryptjs');
 const validateAdminInput = require('../validation/adminValidation');
 
+exports.getStatistic = (req, res) => {
 
-exports.getAllAdmins = (req, res) => {
-    CompanyAdmin.find({}, (admins) => {
-        res.send(admins)
+    CompanyAdmin.aggregate(
+        [
+
+            {
+                $lookup: {
+                    from: "companyadmins",
+                    pipeline: [
+                        {$match:{
+                            "createDate":{$gte: new Date(req.body.from), $lt: new Date(req.body.to)}
+                        }},
+
+                    ],
+                    as: "created"
+                }
+            },
+
+            {
+                $lookup: {
+                    from: "companyadmins",
+                    pipeline: [
+                        {$match:{
+                                "deleteDate":{$gte: new Date(req.body.from), $lt: new Date(req.body.to)}
+                            }},
+
+                    ],
+                    as: "deleted"
+                }
+            },
+
+        ]).then(result => {
+
+        const {created, deleted} = result[0];
+
+        let max=0;
+        if(created.length>deleted.length){
+            max=created.length*2
+        }
+
+        else max=deleted.length*2
+
+        const statistic={
+            created:[created.length,max,0],
+            deleted:[deleted.length,max,0]
+        };
+
+        res.json(statistic)
+
     })
 };
 
-exports.getAdmin = (req, res) => {
-    const{id} = req.params;
-
-    CompanyAdmin.findById({_id: id}, (admin) => {
-        res.send(admin)
-    })
-
-};
 
 exports.addAdmin = (req, res) => {
 
@@ -40,6 +77,8 @@ exports.addAdmin = (req, res) => {
                 company: req.body.company,
                 email: req.body.email,
                 password: req.body.password,
+                active: true,
+                deleteDate: '2050-08-18T21:11:54'
             });
 
             bcrypt.genSalt(10, (err, salt) => {
@@ -62,30 +101,3 @@ exports.addAdmin = (req, res) => {
         }
     });
 }
-
-
-exports.deleteAdmin = (req, res) => {
-    const{id} = req.params;
-
-    User.findOneAndDelete({_id: id}, (err, admin) => {
-        if(err) return console.log(err);
-        console.log(`Object ${admin} was delete`)
-    })
-
-};
-
-exports.changeAdmin = (req, res) => {
-    const{id} = req.params;
-
-    CompanyAdmin.findOneAndUpdate({_id: id}, {
-        role: role,
-        email: email,
-        password: password,
-        company: company,
-        date: date
-    }, (err, admin) => {
-        if(err) return console.log(err);
-        console.log(`Object ${admin} was update`)
-        res.send(admin)
-    })
-};
