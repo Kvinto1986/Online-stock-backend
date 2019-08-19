@@ -20,3 +20,9 @@ exports.addCarrier = (req, res) => {
        res.send(carrier);
    })
 }
+exports.getAllCarriers = (req, res) => {
+    Carrier.find({}, (err, carriers) => {
+        if(err) return console.error(err);
+        res.send(carriers);
+    })
+}

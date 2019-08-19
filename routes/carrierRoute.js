@@ -1,8 +1,8 @@
 const express = require('express');
 const CarrierRouter = express.Router();
-const {addCarrier, findCarrier} = require('../controlles/carrierControlles');
+const {addCarrier, findCarrier, getAllCarriers} = require('../controlles/carrierControlles');
 
-//CarrierRouter.get('/', getAllUsers);
+CarrierRouter.get('/', getAllCarriers);
 CarrierRouter.get('/:company', findCarrier);
 CarrierRouter.post('/addCarrier', addCarrier);
 // CarrierRouter.delete('/:id', deleteUser);
