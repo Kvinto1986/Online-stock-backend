@@ -19,9 +19,23 @@ const CompanyAdminSchema = new Schema({
         required: true
     },
 
+    active: {
+        type: Boolean,
+        default: true
+    },
+
     date: {
         type: Date,
         default: Date.now
+    },
+
+    createDate: {
+        type: Date,
+        default: Date.now
+    },
+
+    deleteDate: {
+        type: Date,
     }
 
 });
