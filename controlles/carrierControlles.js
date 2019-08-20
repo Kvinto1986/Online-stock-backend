@@ -1,11 +1,13 @@
 const Carrier = require('../models/CarrierModel');
 
 exports.addCarrier = (req, res) => {
-    const{email, tel, company} = req.body;
+    const{email, tel, company, passportNumber, countryCode} = req.body;
     Carrier.create({
         email: email,
         tel: tel,
-        company: company
+        company: company,
+        passportNumber: passportNumber,
+        countryCode: countryCode
     }, (err, carrier) => {
         if(err) return console.error(err);
         console.log(`${carrier} added to base`);
@@ -14,9 +16,10 @@ exports.addCarrier = (req, res) => {
 }
 
  exports.findCarrier = (req, res) => {
-    const{company} = req.params;
-   Carrier.findOne({company: company}, (err, carrier) => {
-       if(err) return console.error(err);
+    console.log(req.params)
+    const{passport} = req.params;
+   Carrier.findOne({passportNumber: passport}, (err, carrier) => {
+       if(err) return  res.send(err.message);
        res.send(carrier);
    })
 }

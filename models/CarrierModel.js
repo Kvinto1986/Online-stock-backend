@@ -2,6 +2,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CarrierSchema = new Schema({
+    passportNumber: {
+        type: Number,
+        required: true
+    },
+    countryCode: {
+        type: String,
+        required: true
+    },
     email: {
         type: String
     },
@@ -11,7 +19,6 @@ const CarrierSchema = new Schema({
     },
     company: {
         type: String,
-        required: true
     }
 
 
