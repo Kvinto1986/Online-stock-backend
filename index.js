@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
 
 app.use('/api/allUsers', allUsers);
-app.use('/api/drivers/', driver);
+app.use('/api/drivers', driver);
 app.use('/api/admins', adminRoute);
 app.use('/api/carriers', carrierRoute);
 app.use('/api/ttn', ttnRouute);
