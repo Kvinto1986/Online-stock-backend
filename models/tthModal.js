@@ -6,10 +6,10 @@ const tthScheema = new Schema({
         type: Number,
         required: true
     },
-    // dataOut: {
-    //     type: Date,
-    //     default: Date.now
-    // },
+    dataOut: {
+        type: Date,
+        default: Date.now
+    },
     dataOfRegistration: {
         type: Date,
         default: Date.now
@@ -24,11 +24,14 @@ const tthScheema = new Schema({
     },
     status: {
         type: String,
+        default: 'registred'
+    },
+    driver: {
+        type: String,
         required: true
     },
     registrar: {
         type: String,
-        required: true
     }
 
 });

@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const CarrierSchema = new Schema({
     passportNumber: {
         type: Number,
-        required: true
+        required: true,
+        unique: true
     },
     countryCode: {
         type: String,
@@ -14,7 +15,7 @@ const CarrierSchema = new Schema({
         type: String
     },
     tel: {
-        type: Number,
+        type: String,
         required: true
     },
     company: {
