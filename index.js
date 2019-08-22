@@ -4,11 +4,13 @@ const cors = require('cors');
 const{port, baseUri} = require('./dbconfig');
 const mongoose = require("mongoose");
 const allUsers = require('./routes/allUsersRoute');
-const app = express();
 const adminRoute = require('./routes/adminRoute');
-const carrierRoute = require('./routes/carrierRoute')
-const ttnRouute = require('./routes/tthRoute')
+const carrierRoute = require('./routes/carrierRoute');
+const ttnRouute = require('./routes/tthRoute');
 const driver = require('./routes/driverRoute');
+const users = require('./routes/usersRoute');
+
+const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -19,6 +21,7 @@ app.use('/api/drivers/', driver);
 app.use('/api/admins', adminRoute);
 app.use('/api/carriers', carrierRoute);
 app.use('/api/ttn', ttnRouute);
+app.use('/api/users', users);
 
 
 mongoose.connect(baseUri, {useNewUrlParser: true}, (err) => {

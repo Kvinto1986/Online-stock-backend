@@ -89,7 +89,7 @@ exports.addAdmin = (req, res) => {
                 numbers: true
             });
 
-            mailer(req.body.email, password)
+            mailer(req.body.email, password);
 
             const newCompanyAdmin = new CompanyAdmin({
                 role: req.body.role,
