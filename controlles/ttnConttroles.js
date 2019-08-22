@@ -1,4 +1,4 @@
-const TTN = require('../models/tthModal');
+const TTN = require('../models/ttnModal');
 
 exports.addTth = (req, res) => {
     const{

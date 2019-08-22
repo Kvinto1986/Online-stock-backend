@@ -26,7 +26,6 @@ exports.addDriver = (req, res) => {
 }
 
 exports.getDriver = (req, res) => {
-    console.log(req.params);
     const{license} = req.params;
     Driver.findOne({drivingLicense: license},
         (err, driver) => {

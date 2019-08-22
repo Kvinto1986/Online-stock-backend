@@ -1,6 +1,7 @@
 const Carrier = require('../models/CarrierModel');
 
 exports.addCarrier = (req, res) => {
+    console.log(req.body)
     const{email, tel, company, passportNumber, countryCode} = req.body;
     Carrier.create({
         email: email,
@@ -16,10 +17,9 @@ exports.addCarrier = (req, res) => {
 }
 
  exports.findCarrier = (req, res) => {
-    console.log(req.params)
     const{passport} = req.params;
    Carrier.findOne({passportNumber: passport}, (err, carrier) => {
-       if(err) return  res.send(err.message);
+       if(err) return  console.error("notFindCarrier");
        res.send(carrier);
    })
 }

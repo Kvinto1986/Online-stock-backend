@@ -10,6 +10,15 @@ const tthScheema = new Schema({
         type: Date,
         default: Date.now
     },
+    sender: {
+      type: String,
+      required: true
+    },
+    carNumber: {
+        type: String,
+        required: true
+    },
+
     dataOfRegistration: {
         type: Date,
         default: Date.now
@@ -32,10 +41,23 @@ const tthScheema = new Schema({
     },
     registrar: {
         type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    productsAmout: {
+        type: Number,
+        required: true
+    },
+    namesAmout: {
+        type: Number,
+        required: true
     }
 
 });
 
-const tth = mongoose.model('tth', tthScheema);
+const tth = mongoose.model('ttn', tthScheema);
 
 module.exports = tth;

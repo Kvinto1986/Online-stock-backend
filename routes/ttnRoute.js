@@ -1,6 +1,6 @@
 const express = require('express');
 const TtnRouter = express.Router();
-const{addTth} = require("../controlles/ttnConttroles");;
+const{addTth} = require("../controlles/ttnConttroles");
 
 TtnRouter.post('/addTtn', addTth);
 
