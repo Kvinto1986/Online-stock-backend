@@ -23,9 +23,15 @@ exports.addCarrier = (req, res) => {
        res.send(carrier);
    })
 }
-exports.getAllCarriers = (req, res) => {
+exports.getListCarriers = (req, res) => {
     Carrier.find({}, (err, carriers) => {
         if(err) return console.error(err);
-        res.send(carriers);
+        const transformArr = carriers.map((item) => {
+           return {
+               value: item.company,
+                label: item.company.toLocaleUpperCase()
+           }
+        });
+        res.send(transformArr);
     })
 }

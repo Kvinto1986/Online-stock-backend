@@ -2,40 +2,27 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const tthScheema = new Schema({
+    status: {
+        type: String,
+        default: 'registred'
+    },
     number: {
-        type: Number,
+        type: String,
         required: true
     },
     dataOut: {
         type: Date,
         default: Date.now
     },
+    dataOfRegistration: {
+        type: Date,
+        required: true
+    },
     sender: {
       type: String,
       required: true
     },
-    carNumber: {
-        type: String,
-        required: true
-    },
-
-    dataOfRegistration: {
-        type: Date,
-        default: Date.now
-    },
     carrier: {
-        type: String,
-        required: true
-    },
-    products: {
-        type: String,
-        required: true
-    },
-    status: {
-        type: String,
-        default: 'registred'
-    },
-    driver: {
         type: String,
         required: true
     },
@@ -43,19 +30,25 @@ const tthScheema = new Schema({
         type: String,
         required: true
     },
-    description: {
+    driver: {
         type: String,
         required: true
     },
-    productsAmout: {
+    carNumber: {
+        type: String,
+        required: true
+    },
+    nameAmount: {
         type: Number,
         required: true
     },
-    namesAmout: {
-        type: Number,
-        required: true
-    }
-
+    // productAmount: {
+    //     type: Number,
+    //     required: true
+    // },
+    // description: {
+    //     type: String,
+    // },
 });
 
 const tth = mongoose.model('ttn', tthScheema);
