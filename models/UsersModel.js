@@ -2,15 +2,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-    name: {
+    firstName: {
         type: String,
         required: true
     },
-    surname: {
+    lastName: {
         type: String,
         required: true
     },
-    fathername: {
+    patronymic: {
         type: String,
         required: true
     },
@@ -22,11 +22,11 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    build: {
+    house: {
         type: Number,
         required: true
     },
-    flat: {
+    apartment: {
         type: Number,
         required: true
     },
@@ -35,9 +35,17 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+
     email: {
-        type: String
+        type: String,
+        required: true,
     },
+
+    company: {
+        type: String,
+        required: true,
+    },
+
     password: {
         type: String,
         required: true
@@ -46,6 +54,11 @@ const UserSchema = new Schema({
     date: {
         type: Date,
         default: Date.now
+    },
+
+    dateOfBirth: {
+        type: Date,
+        required: true
     }
 
 });
