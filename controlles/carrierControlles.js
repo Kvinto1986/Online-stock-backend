@@ -43,5 +43,15 @@ exports.getAllCarriers = (req, res) => {
     })
 };
 
+exports.deleteCarrier = (req, res) => {
+    const{id} = req.params;
+    Carrier.findOneAndDelete({_id: id}, (err, carrier) => {
+        if(err) return console.log(err)
+        console.log(`Object ${carrier} was delete`)
+        res.send(carrier)
+    })
+};
+
+
 
 

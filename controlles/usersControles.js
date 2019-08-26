@@ -49,7 +49,6 @@ exports.getUser = (req, res) => {
 
 exports.deleteUser = (req, res) => {
     const{id} = req.params;
-
     User.findOneAndDelete({_id: id}, (err, user) => {
         if(err) return console.log(err)
         console.log(`Object ${user} was delete`)
