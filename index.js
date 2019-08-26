@@ -5,11 +5,9 @@ const{port, baseUri} = require('./dbconfig');
 const mongoose = require("mongoose");
 const allUsers = require('./routes/allUsersRoute');
 const adminRoute = require('./routes/adminRoute');
-const carrierRoute = require('./routes/carrierRoute')
-const ttnRoute = require('./routes/ttnRoute');
-const getAllSender = require('./routes/senderRoute');
 const carrierRoute = require('./routes/carrierRoute');
-const ttnRouute = require('./routes/tthRoute');
+const getAllSender = require('./routes/senderRoute');
+const ttnRoute = require('./routes/ttnRoute');
 const driver = require('./routes/driverRoute');
 const users = require('./routes/usersRoute');
 
@@ -25,7 +23,7 @@ app.use('/api/admins', adminRoute);
 app.use('/api/carriers', carrierRoute);
 app.use('/api/ttn', ttnRoute);
 app.use('/api/sender', getAllSender);
-app.use('/api/ttn', ttnRouute);
+app.use('/api/ttn', ttnRoute);
 app.use('/api/users', users);
 
 
