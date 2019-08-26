@@ -27,13 +27,13 @@ app.use('/api/ttn', ttnRoute);
 app.use('/api/users', users);
 
 
-mongoose.connect(baseUri, {useNewUrlParser: true}, (err) => {
-    if(err) return console.error(err);
+mongoose.connect(baseUri, { useNewUrlParser: true }).then(
+    () => {console.log('Database is connected') },
+    err => { console.log('Can not connect to the database'+ err)}
+);
 
-    app.listen(port, (err) => {
-        if(err) {
-            console.error(`Server drop`)
-        }
-        console.log(`Server up on ${port}`)
-    })
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+    console.log(`Server is running on PORT ${PORT}`);
 });
