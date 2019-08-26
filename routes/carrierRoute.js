@@ -1,11 +1,12 @@
 const express = require('express');
 const CarrierRouter = express.Router();
-const {addCarrier, findCarrier, getAllCarriers} = require('../controlles/carrierControlles');
+const {addCarrier, findCarrier, getListCarriers, getAllCarriers, deleteCarrier} = require('../controlles/carrierControlles');
 
-CarrierRouter.get('/', getAllCarriers);
+CarrierRouter.get('/', getListCarriers);
+CarrierRouter.get('/all', getAllCarriers);
 CarrierRouter.get('/:passport', findCarrier);
 CarrierRouter.post('/addCarrier', addCarrier);
-// CarrierRouter.delete('/:id', deleteUser);
+CarrierRouter.delete('/:id', deleteCarrier);
 // CarrierRouter.put('/:id', changeUser);
 
 module.exports = CarrierRouter;
