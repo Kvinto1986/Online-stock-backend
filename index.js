@@ -7,8 +7,9 @@ const allUsers = require('./routes/allUsersRoute');
 const app = express();
 const adminRoute = require('./routes/adminRoute');
 const carrierRoute = require('./routes/carrierRoute')
-const ttnRouute = require('./routes/tthRoute')
+const ttnRouute = require('./routes/tthRoute');
 const driver = require('./routes/driverRoute');
+const managerRoute = require('./routes/managerRoute');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -19,7 +20,7 @@ app.use('/api/drivers/', driver);
 app.use('/api/admins', adminRoute);
 app.use('/api/carriers', carrierRoute);
 app.use('/api/ttn', ttnRouute);
-
+app.use('/api/managers', managerRoute);
 
 mongoose.connect(baseUri, {useNewUrlParser: true}, (err) => {
     if(err) return console.error(err);
