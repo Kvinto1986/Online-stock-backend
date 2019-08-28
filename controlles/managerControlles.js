@@ -1,0 +1,3 @@
+// const Driver = require('../models/driverModel');
+// TODO: registerDelivery logic ...
+exports.registerDelivery = (req, res) => {}
