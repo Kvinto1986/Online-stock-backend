@@ -59,22 +59,11 @@ exports.deleteUser = (req, res) => {
 exports.changeUser = (req, res) => {
     const{id} = req.params;
 //TODO here
-    User.findOneAndUpdate({_id: id}, {   name: name,
-        surname: surname,
-        fathername: fathername,
-        city: city,
-        street: street,
-        build: build,
-        flat: flat,
-        role: role,
-        email: email,
-        password: password,
-        date: date
-    }, (err, user) => {
-        if(err) return console.log(err);
-        console.log(`Object ${user} was update`)
-        res.send(user)
-    })
+//     User.findOneAndUpdate({_id: id}, {} (err, user) => {
+//         if(err) return console.log(err);
+//         console.log(`Object ${user} was update`)
+//         res.send(user)
+//     })
 };
 
 

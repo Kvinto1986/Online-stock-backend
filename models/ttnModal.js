@@ -42,13 +42,13 @@ const tthScheema = new Schema({
         type: Number,
         required: true
     },
-    // productAmount: {
-    //     type: Number,
-    //     required: true
-    // },
-    // description: {
-    //     type: String,
-    // },
+    productAmount: {
+        type: Number,
+        required: true
+    },
+    description: {
+        type: String,
+    },
 });
 
 const tth = mongoose.model('ttn', tthScheema);
