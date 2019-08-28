@@ -5,7 +5,7 @@ const {addAdmin,getStatistic,getList,getCompany,changeStatus} = require('../cont
 
 adminRouter.post('/registration', addAdmin);
 adminRouter.post('/getStatistic', getStatistic);
-adminRouter.post('/getList', getList);
+adminRouter.get('/', getList);
 adminRouter.post('/getCompany', getCompany);
 adminRouter.post('/changeStatus', changeStatus);
 
