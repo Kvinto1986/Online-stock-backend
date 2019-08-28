@@ -13,6 +13,7 @@ const carrierRoute = require('./routes/carrierRoute');
 const getAllSender = require('./routes/senderRoute');
 const ttnRoute = require('./routes/ttnRoute');
 const users = require('./routes/usersRoute');
+const warehouses = require('./routes/warehouseRoute');
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use('/api/ttn', ttnRoute);
 app.use('/api/sender', getAllSender);
 app.use('/api/ttn', ttnRoute);
 app.use('/api/users', users);
+app.use('/api/warehouses', warehouses);
 
 
 mongoose.connect(baseUri, { useNewUrlParser: true }).then(
