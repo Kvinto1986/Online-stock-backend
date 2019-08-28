@@ -4,18 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/YuriPetyhov/Online-stock-backend.git"
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/YuriPetyhov/Online-stock-backend/issues"
-  },
-  "homepage": "https://github.com/YuriPetyhov/Online-stock-backend#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",

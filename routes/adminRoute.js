@@ -1,6 +1,6 @@
 const express = require('express');
 const adminRouter = express.Router();
-const {addAdmin,getStatistic,getList,getCompany,changeStatus} = require('../controlles/adminControlles');
+const {addAdmin,getStatistic,getList,getCompany,changeStatus} = require('../controlles/adminControllers');
 
 
 adminRouter.post('/registration', addAdmin);

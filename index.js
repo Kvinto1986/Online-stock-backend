@@ -4,31 +4,41 @@ const cors = require('cors');
 const{port, baseUri} = require('./dbconfig');
 const mongoose = require("mongoose");
 const allUsers = require('./routes/allUsersRoute');
-const app = express();
 const adminRoute = require('./routes/adminRoute');
 const carrierRoute = require('./routes/carrierRoute')
 const ttnRouute = require('./routes/tthRoute');
 const driver = require('./routes/driverRoute');
 const managerRoute = require('./routes/managerRoute');
+const carrierRoute = require('./routes/carrierRoute');
+const getAllSender = require('./routes/senderRoute');
+const ttnRoute = require('./routes/ttnRoute');
+const users = require('./routes/usersRoute');
+
+const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
 
 app.use('/api/allUsers', allUsers);
-app.use('/api/drivers/', driver);
+app.use('/api/drivers', driver);
 app.use('/api/admins', adminRoute);
 app.use('/api/carriers', carrierRoute);
 app.use('/api/ttn', ttnRouute);
 app.use('/api/managers', managerRoute);
+app.use('/api/ttn', ttnRoute);
+app.use('/api/sender', getAllSender);
+app.use('/api/ttn', ttnRoute);
+app.use('/api/users', users);
 
-mongoose.connect(baseUri, {useNewUrlParser: true}, (err) => {
-    if(err) return console.error(err);
 
-    app.listen(port, (err) => {
-        if(err) {
-            console.error(`Server drop`)
-        }
-        console.log(`Server up on ${port}`)
-    })
+mongoose.connect(baseUri, { useNewUrlParser: true }).then(
+    () => {console.log('Database is connected') },
+    err => { console.log('Can not connect to the database'+ err)}
+);
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+    console.log(`Server is running on PORT ${PORT}`);
 });

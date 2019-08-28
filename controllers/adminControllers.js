@@ -125,8 +125,6 @@ exports.getList = (req, res) => {
 
     CompanyAdmin.find({})
         .then(companyList => {
-            const list = {};
-
             const emailsArr = companyList.map((elem) => {
                 const obj = {};
                 obj.label = elem.email;
