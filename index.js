@@ -6,10 +6,10 @@ const mongoose = require("mongoose");
 const allUsers = require('./routes/allUsersRoute');
 const adminRoute = require('./routes/adminRoute');
 const carrierRoute = require('./routes/carrierRoute')
+const ttnRoute = require('./routes/ttnRoute');
 const driver = require('./routes/driverRoute');
 const managerRoute = require('./routes/managerRoute');
 const getAllSender = require('./routes/senderRoute');
-const ttnRoute = require('./routes/ttnRoute');
 const users = require('./routes/usersRoute');
 const warehouses = require('./routes/warehouseRoute');
 
@@ -21,7 +21,7 @@ app.use(cors());
 
 app.use('/api/allUsers', allUsers);
 app.use('/api/drivers', driver);
-app.use('/api/admins', adminRoute);
+app.use('/api/companyadmins', adminRoute);
 app.use('/api/carriers', carrierRoute);
 app.use('/api/managers', managerRoute);
 app.use('/api/ttn', ttnRoute);
@@ -29,6 +29,7 @@ app.use('/api/sender', getAllSender);
 app.use('/api/ttn', ttnRoute);
 app.use('/api/users', users);
 app.use('/api/warehouses', warehouses);
+
 
 
 mongoose.connect(baseUri, { useNewUrlParser: true }).then(

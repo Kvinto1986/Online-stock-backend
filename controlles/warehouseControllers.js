@@ -15,7 +15,9 @@ exports.addWarehouse = (req, res) => {
                     license: 'License already exists'
                 });
             } else {
+
                 const newWarehouse = new Warehouse({
+                    adminId: req.body.adminId,
                     name: req.body.name,
                     license: req.body.license,
                     totalArea: req.body.totalArea,
@@ -28,5 +30,23 @@ exports.addWarehouse = (req, res) => {
             }
         })
 };
+
+exports.getWarehousesList = (req, res) => {
+
+    Warehouse.find({adminId: req.body.id})
+        .then(warehouse => {
+            res.json(warehouse)
+        });
+}
+
+exports.deleteWarehouse = (req, res) => {
+
+    Warehouse.findOneAndDelete({_id: req.body.id})
+        .then(warehouse => {
+            res.json(warehouse)
+            warehouse.remove();
+
+        });
+}
 
 

@@ -20,9 +20,8 @@ const CarrierSchema = new Schema({
     },
     company: {
         type: String,
-    }
-
-
+    },
+    isDisabled: false
 });
 
 const Carrier = mongoose.model('carrier', CarrierSchema);

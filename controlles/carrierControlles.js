@@ -54,4 +54,11 @@ exports.deleteCarrier = (req, res) => {
 
 
 
-
+exports.changeCarrier = (req, res) => {
+    const{id} = req.body;
+    Carrier.findOneAndUpdate({_id: id}, req.body, {new: true},  (err, carrier) => {
+        if(err) return console.error(err)
+        console.log(`${carrier} was update`)
+        res.send(carrier)
+    })
+}
