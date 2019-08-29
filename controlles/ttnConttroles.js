@@ -29,3 +29,15 @@ exports.addTth = (req, res) => {
         res.send(ttn)
     })
 }
+
+exports.findTTNbyNumber = (req, res) => {
+    TTN
+    .findOne({number: req.body.ttnNumber})
+    .then(result => {
+        if(result) {
+            res.send(result)
+        } else {
+            res.send(null) 
+        }
+    })
+}
