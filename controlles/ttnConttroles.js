@@ -5,24 +5,22 @@ exports.addTth = (req, res) => {
         number,
         date,
         carrier,
-        sender,
-        registrar,
         driver,
+        registrar,
         carNumber,
-        nameAmount,
-        productAmount,
+        sender,
+        products,
         description
     } = req.body;
     TTN.create({
         number: number,
         dataOfRegistration: date,
-        sender: sender,
         carrier: carrier,
-        registrar: registrar,
         driver: driver,
+        registrar: registrar,
         carNumber: carNumber,
-        nameAmount: nameAmount,
-        productAmount: productAmount,
+        sender: sender,
+        products: products,
         description: description
     }, (err, ttn) => {
         if(err) return console.error(`${ttn} didn't add`)
