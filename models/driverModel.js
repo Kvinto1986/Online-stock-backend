@@ -3,8 +3,9 @@ const Schema = mongoose.Schema;
 
 const driverScheema = new Schema({
     drivingLicense: {
-        type: String,
-        required: true
+        type: Number,
+        required: true,
+        unique: true
     },
     email: {
         type: String
