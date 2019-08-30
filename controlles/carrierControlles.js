@@ -3,14 +3,14 @@ const Carrier = require('../models/CarrierModel');
 exports.addCarrier = async (req, res) => {
     const{email, tel, company, passportNumber, countryCode} = req.body;
     try {
-        await Carrier.create({
+        const carrier = await Carrier.create({
             email: email,
             tel: tel,
             company: company,
             passportNumber: passportNumber,
             countryCode: countryCode
         })
-            .then(Newcarrier => { res.send(Newcarrier)})
+        res.send(carrier)
     } catch (err) {
         res.status(400).json({err, massage: 'cant add newCarrier'})
     }
@@ -19,36 +19,33 @@ exports.addCarrier = async (req, res) => {
  exports.findCarrier = async (req, res) => {
     const{passport} = req.params;
     try {
-        await Carrier.findOne({passportNumber: passport})
-            .then((carrier) => {res.send(carrier)})
+        const searchingCarrier =  await Carrier.findOne({passportNumber: passport})
+         res.send(searchingCarrier)
     } catch (err) {
         res.status(400).json({err, massage: 'cant find'})
     }
-
 };
 
 exports.getListCarriers = async (req, res) => {
     try {
-        await Carrier.find({})
-            .then( carriers => {
-                const transformArr = carriers.map((item) => {
-                    return {
-                        value: item.company,
-                        label: item.company.toLocaleUpperCase()
-                    }
-                });
-                res.send(transformArr);
-            })
+        const List = await Carrier.find({})
+        const transformArr = List.map((item) => {
+                return {
+                    value: item.company,
+                    label: item.company.toLocaleUpperCase()
+                }
+            });
+        res.send(transformArr);
+
     } catch (err) {
         res.status(400).json({err, message: 'Can not find any carrier'});
     }
-
 };
 
 exports.getAllCarriers = async (req, res) => {
     try{
-        await Carrier.find({})
-            .then((carriers) => { res.send(carriers)} )
+       const allCarries =  await Carrier.find({})
+        res.send(allCarries)
     } catch (err) {
         res.status(400).json({err, message: 'Can not find any carrier'});
     }
