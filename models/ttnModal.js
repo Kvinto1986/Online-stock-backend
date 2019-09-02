@@ -8,7 +8,8 @@ const tthScheema = new Schema({
     },
     number: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     dataOut: {
         type: Date,

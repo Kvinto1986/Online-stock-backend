@@ -5,5 +5,4 @@ const{addDriver, getDriver} = require("../controlles/driversConrolles");;
 DriverRouter.post('/addDriver', addDriver);
 DriverRouter.get('/:license', getDriver);
 
-
 module.exports = DriverRouter
