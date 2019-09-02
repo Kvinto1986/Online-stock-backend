@@ -92,7 +92,6 @@ exports.addAdmin = (req, res) => {
             mailer(req.body.email, password);
 
             const newCompanyAdmin = new CompanyAdmin({
-                role: req.body.role,
                 company: req.body.company,
                 email: req.body.email,
                 password: password,
@@ -122,6 +121,8 @@ exports.addAdmin = (req, res) => {
 };
 
 exports.getList = (req, res) => {
+
+    console.log(req)
 
     CompanyAdmin.find({})
         .then(companyList => {

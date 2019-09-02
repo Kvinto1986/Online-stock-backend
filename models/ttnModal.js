@@ -8,7 +8,8 @@ const tthScheema = new Schema({
     },
     number: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     dataOut: {
         type: Date,
@@ -38,12 +39,8 @@ const tthScheema = new Schema({
         type: String,
         required: true
     },
-    nameAmount: {
-        type: Number,
-        required: true
-    },
-    productAmount: {
-        type: Number,
+    products: {
+        type: Array,
         required: true
     },
     description: {

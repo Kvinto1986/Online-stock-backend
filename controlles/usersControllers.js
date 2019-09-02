@@ -1,4 +1,5 @@
-const User = require('../models/UsersModel');
+const User = require('../models/EmployeeModel');
+
 const bcrypt = require('bcryptjs');
 const validateUserInput = require('../validation/userValidation');
 const generator = require('generate-password');
@@ -35,7 +36,7 @@ exports.addUser = (req, res) => {
                     street: req.body.street,
                     house: req.body.house,
                     apartment: req.body.apartment,
-                    role: req.body.role,
+                    position: req.body.position,
                     dateOfBirth: req.body.dateOfBirth,
                     company: req.body.company,
                     password:password

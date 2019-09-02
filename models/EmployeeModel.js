@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
+const Users = require('./UsersBaseModel');
+
+module.exports = Users.discriminator('employee', new mongoose.Schema({
     firstName: {
         type: String,
         required: true
@@ -31,38 +32,17 @@ const UserSchema = new Schema({
         required: true
     },
 
-    role: {
-        type: String,
-        required: true
-    },
-
-    email: {
-        type: String,
-        required: true,
-    },
-
-    company: {
-        type: String,
-        required: true,
-    },
-
-    password: {
-        type: String,
-        required: true
-    },
-
-    date: {
-        type: Date,
-        default: Date.now
-    },
 
     dateOfBirth: {
         type: Date,
         required: true
-    }
+    },
 
-});
+    position:{
+        type: String,
+        required: true
+    },
 
-const User = mongoose.model('users', UserSchema);
+},));
 
-module.exports = User;
+

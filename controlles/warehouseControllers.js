@@ -33,11 +33,12 @@ exports.addWarehouse = (req, res) => {
 
 exports.getWarehousesList = (req, res) => {
 
-    Warehouse.find({adminId: req.body.id})
+
+    Warehouse.find({})
         .then(warehouse => {
             res.json(warehouse)
         });
-}
+};
 
 exports.deleteWarehouse = (req, res) => {
 

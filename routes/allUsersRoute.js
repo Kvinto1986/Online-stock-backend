@@ -3,10 +3,11 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+require('../passport')(passport)
 
 const validateLoginInput = require('../validation/loginValidation');
 
-const MainAdmin = require('../models/AdminModel');
+const User = require('../models/UsersBaseModel');
 
 router.post('/login', (req, res) => {
 
@@ -19,57 +20,22 @@ router.post('/login', (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    MainAdmin.aggregate([
-
-        {
-            $lookup: {
-                from: "rootadmins",
-                pipeline: [
-                    {$match: {email: email}},
-                ],
-                as: "rootadmins"
+    User.findOne({email})
+        .then(user => {
+            if (!user) {
+                errors.email = 'User not found'
+                return res.status(404).json(errors);
             }
-        },
-
-        {
-            $lookup: {
-                from: "users",
-                pipeline: [
-                    {$match: {email: email}},
-                ],
-                as: "users"
+            if (user.confirmation===false) {
+                errors.confirmation = 'Need confirmation (contact your supervisor)';
+                return res.status(404).json(errors);
             }
-        },
-
-        {
-            $lookup: {
-                from: "companyadmins",
-                pipeline: [
-                    {$match: {email: email}},
-                ],
-                as: "companyadmins"
-            }
-        },
-
-
-    ]).then(result => {
-        const {rootadmins, users, companyadmins} = result[0];
-
-        const userArr = rootadmins.concat(users.concat(companyadmins));
-
-        if (userArr.length > 0) {
-            const user = userArr[0];
-
             bcrypt.compare(password, user.password)
                 .then(isMatch => {
                     if (isMatch) {
-                        const payload = {
-                            id: user._id,
-                            name: user.name,
-                            role: user.role,
-                            company: user.company,
-                            email: user.email,
-                        };
+                        console.log(user)
+                        const payload = Object.assign({},user._doc)
+
                         jwt.sign(payload, 'secret', {
                             expiresIn: 3600
                         }, (err, token) => {
@@ -86,18 +52,12 @@ router.post('/login', (req, res) => {
                         return res.status(400).json(errors);
 
                     }
-
-                })
-
-        } else {
-            errors.email = 'User not found';
-            return res.status(404).json(errors);
-        }
-    })
-
+                });
+        });
 });
 
 router.get('/me', passport.authenticate('jwt', {session: false}), (req, res) => {
+
     return res.json({
         id: req.user.id,
         name: req.user.name,

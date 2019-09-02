@@ -1,64 +1,72 @@
 const Carrier = require('../models/CarrierModel');
 
-exports.addCarrier = (req, res) => {
+exports.addCarrier = async (req, res) => {
     const{email, tel, company, passportNumber, countryCode} = req.body;
-    Carrier.create({
-        email: email,
-        tel: tel,
-        company: company,
-        passportNumber: passportNumber,
-        countryCode: countryCode
-    }, (err, carrier) => {
-        if(err) return console.error(err);
-        console.log(`${carrier} added to base`);
-        res.send(carrier);
-    })
-};
+    try {
+        const carrier = await Carrier.create({
+            email: email,
+            tel: tel,
+            company: company,
+            passportNumber: passportNumber,
+            countryCode: countryCode
+        })
+        res.send(carrier)
+    } catch (err) {
+        res.status(400).json({err, massage: 'cant add newCarrier'})
+    }
+}
 
- exports.findCarrier = (req, res) => {
+ exports.findCarrier = async (req, res) => {
     const{passport} = req.params;
-   Carrier.findOne({passportNumber: passport}, (err, carrier) => {
-       if(err) return  console.error("notFindCarrier");
-       res.send(carrier);
-   })
+    try {
+        const searchingCarrier =  await Carrier.findOne({passportNumber: passport})
+         res.send(searchingCarrier)
+    } catch (err) {
+        res.status(400).json({err, massage: 'cant find'})
+    }
 };
 
-exports.getListCarriers = (req, res) => {
-    Carrier.find({}, (err, carriers) => {
-        if(err) return console.error(err);
-        const transformArr = carriers.map((item) => {
-           return {
-               value: item.company,
-                label: item.company.toLocaleUpperCase()
-           }
-        });
+exports.getListCarriers = async (req, res) => {
+    try {
+        const List = await Carrier.find({})
+        const transformArr = List.map((item) => {
+                return {
+                    value: item.company,
+                    label: item.company.toLocaleUpperCase()
+                }
+            });
         res.send(transformArr);
-    })
+
+    } catch (err) {
+        res.status(400).json({err, message: 'Can not find any carrier'});
+    }
 };
 
-exports.getAllCarriers = (req, res) => {
-    Carrier.find({}, (err, carriers) => {
-        if(err) console.error(err);
-        res.send(carriers);
-    })
+exports.getAllCarriers = async (req, res) => {
+    try{
+       const allCarries =  await Carrier.find({})
+        res.send(allCarries)
+    } catch (err) {
+        res.status(400).json({err, message: 'Can not find any carrier'});
+    }
 };
 
-exports.deleteCarrier = (req, res) => {
+exports.deleteCarrier = async (req, res) => {
     const{id} = req.params;
-    Carrier.findOneAndDelete({_id: id}, (err, carrier) => {
-        if(err) return console.log(err)
-        console.log(`Object ${carrier} was delete`)
-        res.send(carrier)
-    })
+    try {
+        await Carrier.findOneAndDelete({_id: id})
+            .then((carrier) => {res.send(carrier)})
+    } catch (err) {
+        res.status(400).json({err, message: 'Can not delete'});
+    }
 };
 
-
-
-exports.changeCarrier = (req, res) => {
+exports.changeCarrier = async (req, res) => {
     const{id} = req.body;
-    Carrier.findOneAndUpdate({_id: id}, req.body, {new: true},  (err, carrier) => {
-        if(err) return console.error(err)
-        console.log(`${carrier} was update`)
-        res.send(carrier)
-    })
+    try{
+        await Carrier.findOneAndUpdate({_id: id}, req.body, {new: true})
+            .then((carrier) => { res.send(carrier)})
+    } catch (err) {
+        res.status(400).json({err, message: "cant update"})
+    }
 }

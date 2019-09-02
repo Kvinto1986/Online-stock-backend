@@ -1,32 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const CompanyAdminSchema = new Schema({
-    role: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    company: {
-        type: String,
-        required: true
-    },
+const Users = require('./UsersBaseModel');
 
+module.exports = Users.discriminator('companyAdmin', new mongoose.Schema({
     active: {
         type: Boolean,
         default: true
-    },
-
-    date: {
-        type: Date,
-        default: Date.now
     },
 
     createDate: {
@@ -38,8 +18,4 @@ const CompanyAdminSchema = new Schema({
         type: Date,
     }
 
-});
-
-const CompanyAdminModel = mongoose.model('companyAdmin', CompanyAdminSchema);
-
-module.exports = CompanyAdminModel;
+},));
