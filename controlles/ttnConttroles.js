@@ -34,10 +34,14 @@ exports.findTTNbyNumber = (req, res) => {
     TTN
     .findOne({number: req.body.ttnNumber})
     .then(result => {
-        if(result) {
+        if (result !== null) {
             res.send(result)
-        } else {
-            res.send(null) 
         }
+        else {
+            return res.status(400).json({
+                warehouseTtn: "TTN not found"
+            });
+        }
+        
     })
 }
