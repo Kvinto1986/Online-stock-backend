@@ -1,4 +1,5 @@
-const User = require('../models/UsersModel');
+const User = require('../models/EmployeeModel');
+
 const bcrypt = require('bcryptjs');
 const validateUserInput = require('../validation/userValidation');
 const generator = require('generate-password');
