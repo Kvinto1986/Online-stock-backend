@@ -50,4 +50,16 @@ exports.deleteWarehouse = (req, res) => {
         });
 }
 
-
+exports.getAllWarehouses = (req, res) => {
+    Warehouse
+    .find({})
+    .then(warehouses => {
+        if(warehouses) {
+            return res.json(warehouses)
+        } 
+        else {
+            return res.status(400).json({stocks: "Stocks for this cargo isn't found"});
+        }
+    })
+    .catch(err => console.log(err))
+}
