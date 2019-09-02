@@ -36,7 +36,7 @@ exports.addUser = (req, res) => {
                     street: req.body.street,
                     house: req.body.house,
                     apartment: req.body.apartment,
-                    role: req.body.role,
+                    position: req.body.position,
                     dateOfBirth: req.body.dateOfBirth,
                     company: req.body.company,
                     password:password
