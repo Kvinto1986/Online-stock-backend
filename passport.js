@@ -3,7 +3,6 @@ const ExtractJWT = require('passport-jwt').ExtractJwt;
 const User = require('./models/CompanyAdminModel')
 const opts = {};
 
-
 opts.jwtFromRequest = ExtractJWT.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = 'secret';
 

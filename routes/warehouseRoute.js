@@ -9,14 +9,14 @@ require('../passport')(passport)
 
 WarehousesRoute.post('/registration', addWarehouse);
 WarehousesRoute.post('/delete', deleteWarehouse);
-WarehousesRoute.get('/getAll', getAllWarehouses)
+WarehousesRoute.get('/getAll')
 
-WarehousesRoute.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
-
-    return  Warehouse.find({})
-        .then(warehouse => {
-            res.json(warehouse)
-        });
-});
+//WarehousesRoute.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
+///
+   // return  Warehouse.find({})
+   //     .then(warehouse => {
+   //         res.json(warehouse)
+  //      });
+//});
 
 module.exports = WarehousesRoute;

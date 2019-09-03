@@ -1,18 +1,21 @@
+const express = require('express');
+const router = express.Router();
 const User = require('../models/EmployeeModel');
-
 const bcrypt = require('bcryptjs');
 const validateUserInput = require('../validation/userValidation');
 const generator = require('generate-password');
 const mailer = require('../utils/mailSender');
 
-exports.addUser = (req, res) => {
+router.post ('/', (req, res) => {
     const {errors, isValid} = validateUserInput(req.body);
 
     if (!isValid) {
         return res.status(400).json(errors);
     }
 
-    User.findOne({email: req.body.email})
+    const email=req.body.email
+
+    User.findOne({email})
         .then(user => {
             if (user) {
                 return res.status(400).json({
@@ -25,13 +28,13 @@ exports.addUser = (req, res) => {
                     numbers: true
                 });
 
-                mailer(req.body.email, password);
+                mailer(email, password);
 
                 const newUser = new User({
                     firstName: req.body.firstName,
                     lastName: req.body.lastName,
                     patronymic: req.body.patronymic,
-                    email: req.body.email,
+                    email: email,
                     city: req.body.city,
                     street: req.body.street,
                     house: req.body.house,
@@ -59,6 +62,5 @@ exports.addUser = (req, res) => {
                 });
             }
         });
-};
-
-
+});
+module.exports = router;
