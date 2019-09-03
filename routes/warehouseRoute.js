@@ -2,7 +2,7 @@ const express = require('express');
 const WarehousesRoute = express.Router();
 
 const Warehouse = require('../models/WarehouseModel');
-const {addWarehouse,deleteWarehouse} = require('../controlles/warehouseControllers');
+const {addWarehouse,deleteWarehouse, getAllWarehouses} = require('../controlles/warehouseControllers');
 const passport = require('passport');
 require('../passport')(passport)
 
