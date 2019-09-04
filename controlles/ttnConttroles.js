@@ -36,6 +36,26 @@ exports.findTTNbyNumber = (req, res) => {
     .findOne({number: req.body.ttnNumber})
     .then(result => {
         if (result !== null) {
+            // If we're need to calculate area for each of cargo unit
+            if(req.body.calculateAreaFlag) {
+
+                result.products
+                .forEach(product => {
+                    switch (product.type) {
+                        case 'BOX':
+                            // TODO: Yury
+                            // Type of products amount should be Number, not String
+                            product.size = Number(product.amount) // Fix this
+                            break;
+                        case 'KG':
+                            product.size = product.amount / 100
+                            break;
+                        default:
+                            break;
+                    }
+                });
+            }
+
             res.send(result)
         }
         else {
