@@ -2,12 +2,9 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
-require('../passport')(passport);
 
-const validateLoginInput = require('../validation/loginValidation');
-
-const User = require('../models/UsersBaseModel');
+const validateLoginInput = require('../../validation/loginValidation');
+const User = require('../../models/UsersBaseModel');
 
 router.post('/', (req, res) => {
 
@@ -45,7 +42,6 @@ router.post('/', (req, res) => {
                     } else {
                         errors.password = 'Incorrect Password';
                         return res.status(400).json(errors);
-
                     }
                 });
         });
