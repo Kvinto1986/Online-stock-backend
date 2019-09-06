@@ -26,8 +26,6 @@ exports.addWarehouse = (req, res) => {
 };
 
 exports.getWarehousesList = (req, res) => {
-
-
     Warehouse.find({})
         .then(warehouse => {
             res.json(warehouse)

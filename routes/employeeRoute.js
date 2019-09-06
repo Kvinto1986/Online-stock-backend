@@ -5,15 +5,17 @@ const bcrypt = require('bcryptjs');
 const validateUserInput = require('../validation/userValidation');
 const generator = require('generate-password');
 const mailer = require('../utils/mailSender');
+const passport = require('passport');
+require('../passport')(passport);
 
-router.post ('/', (req, res) => {
+router.post('/', (req, res) => {
     const {errors, isValid} = validateUserInput(req.body);
 
     if (!isValid) {
         return res.status(400).json(errors);
     }
 
-    const email=req.body.email
+    const email = req.body.email;
 
     User.findOne({email})
         .then(user => {
@@ -42,7 +44,7 @@ router.post ('/', (req, res) => {
                     position: req.body.position,
                     dateOfBirth: req.body.dateOfBirth,
                     company: req.body.company,
-                    password:password
+                    password: password
                 });
 
                 bcrypt.genSalt(10, (err, salt) => {
@@ -63,4 +65,30 @@ router.post ('/', (req, res) => {
             }
         });
 });
+
+router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
+
+    if (req.user.role === 'companyAdmin') {
+
+        const company = req.user.company;
+
+        User.find({company})
+            .then(warehouse => {
+
+                const list=warehouse.map((elem=>{
+                    return {
+                        id:elem._id,
+                        position:elem.position,
+                        firstName:elem.firstName,
+                        patronymic:elem.patronymic,
+                        lastName:elem.lastName,
+                        email:elem.email,
+                        dateOfBirth:elem.dateOfBirth,
+                    }
+                }));
+                res.json(list)
+            });
+    }
+});
+
 module.exports = router;
