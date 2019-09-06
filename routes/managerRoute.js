@@ -1,7 +1,10 @@
 const express = require('express');
 const ManagerRouter = express.Router();
-const {registerDelivery} = require("../controlles/managerControlles");
+const { registerDelivery, finishWarehausing } = require("../controlles/managerControlles");
 
-ManagerRouter.post('/registerDelivery', registerDelivery);
+ManagerRouter
+.post('/registerDelivery', registerDelivery)
+.post('/finishWarehausing', finishWarehausing)
+
 
 module.exports = ManagerRouter

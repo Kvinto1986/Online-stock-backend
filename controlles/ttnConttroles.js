@@ -33,12 +33,11 @@ exports.addTth = async (req, res) => {
 
 exports.findTTNbyNumber = (req, res) => {
     TTN
-    .findOne({number: req.body.ttnNumber})
+    .findOne({number: req.body.ttnNumber, status: 'registred'})
     .then(result => {
         if (result !== null) {
             // If we're need to calculate area for each of cargo unit
             if(req.body.calculateAreaFlag) {
-
                 result.products
                 .forEach(product => {
                     switch (product.type) {
@@ -60,7 +59,7 @@ exports.findTTNbyNumber = (req, res) => {
         }
         else {
             return res.status(400).json({
-                warehouseTtn: "TTN not found"
+                warehouseTtn: "TTN with this number not found or it already has been warehoused."
             });
         }
         
