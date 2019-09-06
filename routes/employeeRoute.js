@@ -9,11 +9,6 @@ const passport = require('passport');
 require('../passport')(passport);
 
 router.post('/', (req, res) => {
-    const {errors, isValid} = validateUserInput(req.body);
-
-    if (!isValid) {
-        return res.status(400).json(errors);
-    }
 
     const email = req.body.email;
 
@@ -90,5 +85,17 @@ router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
             });
     }
 });
+
+router.delete('/:id', passport.authenticate('jwt', {session: false}), (req, res) => {
+    if (req.user.role === 'companyAdmin') {
+       console.log(req.params.id)
+        User.findOne({_id:req.params.id}).then(user =>{
+            res.json(user)
+            user.remove().exec()
+        })}
+    else return res.status(400).json({
+        user: 'This request is not available to you'
+    });
+    });
 
 module.exports = router;
