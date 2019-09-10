@@ -31,6 +31,14 @@ exports.addTth = async (req, res) => {
     }
 }
 
+exports.findTtn = async (req, res) => {
+    const{ttnNumber} = req.params
+    TTN.findOne({number: ttnNumber}, (err, ttn) => {
+        if(err) return console.error(err)
+        res.send(ttn)
+    })
+}
+
 exports.findTTNbyNumber = (req, res) => {
     TTN
     .findOne({number: req.body.ttnNumber})
