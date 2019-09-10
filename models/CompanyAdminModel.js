@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Users = require('./UsersBaseModel');
-
-module.exports = Users.discriminator('companyAdmin', new mongoose.Schema({
+const CompanyAdminSchema = new mongoose.Schema({
     active: {
         type: Boolean,
         default: true
@@ -18,4 +17,5 @@ module.exports = Users.discriminator('companyAdmin', new mongoose.Schema({
         type: Date,
     }
 
-},));
+});
+module.exports = Users.discriminator('companyAdmin', CompanyAdminSchema);

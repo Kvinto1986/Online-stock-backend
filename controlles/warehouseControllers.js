@@ -2,12 +2,6 @@ const Warehouse = require('../models/WarehouseModel');
 const validateWarehouseInput = require('../validation/warehouseWalidation');
 
 exports.addWarehouse = (req, res) => {
-    const {errors, isValid} = validateWarehouseInput(req.body);
-
-    if (!isValid) {
-        return res.status(400).json(errors);
-    }
-
     Warehouse.findOne({license: req.body.license})
         .then(warehouse => {
             if (warehouse) {
@@ -32,8 +26,6 @@ exports.addWarehouse = (req, res) => {
 };
 
 exports.getWarehousesList = (req, res) => {
-
-
     Warehouse.find({})
         .then(warehouse => {
             res.json(warehouse)

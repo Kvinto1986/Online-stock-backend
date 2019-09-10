@@ -1,18 +1,18 @@
+const express = require('express');
+const router = express.Router();
 const User = require('../models/EmployeeModel');
-
 const bcrypt = require('bcryptjs');
 const validateUserInput = require('../validation/userValidation');
 const generator = require('generate-password');
 const mailer = require('../utils/mailSender');
+const passport = require('passport');
+require('../passport')(passport);
 
-exports.addUser = (req, res) => {
-    const {errors, isValid} = validateUserInput(req.body);
+router.post('/', (req, res) => {
 
-    if (!isValid) {
-        return res.status(400).json(errors);
-    }
+    const email = req.body.email;
 
-    User.findOne({email: req.body.email})
+    User.findOne({email})
         .then(user => {
             if (user) {
                 return res.status(400).json({
@@ -25,13 +25,13 @@ exports.addUser = (req, res) => {
                     numbers: true
                 });
 
-                mailer(req.body.email, password);
+                mailer(email, password);
 
                 const newUser = new User({
                     firstName: req.body.firstName,
                     lastName: req.body.lastName,
                     patronymic: req.body.patronymic,
-                    email: req.body.email,
+                    email: email,
                     city: req.body.city,
                     street: req.body.street,
                     house: req.body.house,
@@ -39,7 +39,7 @@ exports.addUser = (req, res) => {
                     position: req.body.position,
                     dateOfBirth: req.body.dateOfBirth,
                     company: req.body.company,
-                    password:password
+                    password: password
                 });
 
                 bcrypt.genSalt(10, (err, salt) => {
@@ -59,6 +59,43 @@ exports.addUser = (req, res) => {
                 });
             }
         });
-};
+});
 
+router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
 
+    if (req.user.role === 'companyAdmin') {
+
+        const company = req.user.company;
+
+        User.find({company})
+            .then(warehouse => {
+
+                const list=warehouse.map((elem=>{
+                    return {
+                        id:elem._id,
+                        position:elem.position,
+                        firstName:elem.firstName,
+                        patronymic:elem.patronymic,
+                        lastName:elem.lastName,
+                        email:elem.email,
+                        dateOfBirth:elem.dateOfBirth,
+                    }
+                }));
+                res.json(list)
+            });
+    }
+});
+
+router.delete('/:id', passport.authenticate('jwt', {session: false}), (req, res) => {
+    if (req.user.role === 'companyAdmin') {
+       console.log(req.params.id)
+        User.findOne({_id:req.params.id}).then(user =>{
+            res.json(user)
+            user.remove().exec()
+        })}
+    else return res.status(400).json({
+        user: 'This request is not available to you'
+    });
+    });
+
+module.exports = router;

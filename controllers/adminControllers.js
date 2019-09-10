@@ -1,6 +1,6 @@
 const CompanyAdmin = require('../models/CompanyAdminModel');
 const bcrypt = require('bcryptjs');
-const validateAdminInput = require('../validation/adminValidation');
+const validateAdminInput = require('../validation/companyAdminValidation');
 const generator = require('generate-password');
 
 const mailer = require('../utils/mailSender')
