@@ -29,7 +29,6 @@ exports.addTth = async (req, res) => {
         })
         res.send(ttn)
     } catch (e) {
-        console.log(e)
     }
 }
 
