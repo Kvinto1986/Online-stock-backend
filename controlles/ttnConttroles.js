@@ -1,4 +1,6 @@
 const TTN = require('../models/ttnModal');
+const passport = require('passport');
+require('../passport')(passport);
 
 exports.addTth = async (req, res) => {
 
@@ -32,13 +34,12 @@ exports.addTth = async (req, res) => {
 }
 
 exports.findTtn = async (req, res) => {
-    console.log(req.params)
+
     const {ttnNumber} = req.params
     TTN.findOne({number: ttnNumber}).then((ttn) => {
         if (ttn) {
             res.send(ttn)
-        }
-        else res.status(400).json({
+        } else res.status(400).json({
             ttn: 'TTN not found'
         });
     })
@@ -76,4 +77,11 @@ exports.findTTNbyNumber = (req, res) => {
             }
 
         })
+}
+
+exports.getAll =  (req, res) => {
+        TTN.find({})
+            .then(ttns => {
+                res.json(ttns)
+            });
 }
