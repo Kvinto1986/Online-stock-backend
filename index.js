@@ -21,7 +21,7 @@ app.use(cors());
 
 app.use('/api/login', userLogin);
 app.use('/api/companyAdmins', adminRoute);
-app.use('/api/employee', employee);
+app.use('/api/employees', employee);
 
 app.use('/api/drivers', driver);
 app.use('/api/carriers', carrierRoute);

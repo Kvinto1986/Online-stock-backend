@@ -81,6 +81,14 @@ exports.findTTNbyNumber = (req, res) => {
 exports.getAll =  (req, res) => {
         TTN.find({})
             .then(ttns => {
+                const list = ttns.map((elem => {
+                    return {
+                        value: elem._id,
+                        label: elem.number,
+
+                    }
+                }));
+
                 res.json(ttns)
             });
 }
