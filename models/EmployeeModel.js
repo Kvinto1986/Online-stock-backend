@@ -39,7 +39,7 @@ module.exports = Users.discriminator('employee', new mongoose.Schema({
     },
 
     position:{
-        type: String,
+        type: Array,
         required: true
     },
 
