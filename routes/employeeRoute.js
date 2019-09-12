@@ -107,6 +107,11 @@ router.get('/:id', (req, res) => {
                 lastName: user.lastName,
                 email: user.email,
                 dateOfBirth: user.dateOfBirth,
+                city: user.city,
+                street: user.street,
+                house: user.house,
+                apartment: user.apartment,
+                company: user.company,
             });
         } else {
             res.status(400).json({
