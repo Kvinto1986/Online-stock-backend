@@ -85,10 +85,8 @@ exports.getAll =  (req, res) => {
                     return {
                         value: elem._id,
                         label: elem.number,
-
                     }
                 }));
-
-                res.json(ttns)
+                res.json(list)
             });
 }
