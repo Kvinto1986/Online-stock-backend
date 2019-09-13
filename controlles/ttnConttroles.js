@@ -39,6 +39,24 @@ exports.findTtn = async (req, res) => {
     })
 }
 
+exports.findWirehousedTtn = async (req, res) => {
+    const{ ttnNumber } = req.params
+
+    TTN.findOne({number: ttnNumber}, (err, ttn) => {
+        if(err) {
+            return console.error(err)
+        } 
+        else {
+            if(ttn.status === "warehoused") {
+                res.send(ttn)
+            }
+            else {
+                return res.status(400).json({notFound: "TTN not found"})
+            }
+        }
+    })
+}
+
 exports.findTTNbyNumber = (req, res) => {
     TTN
     .findOne({number: req.body.ttnNumber, status: 'registred'})
@@ -72,4 +90,17 @@ exports.findTTNbyNumber = (req, res) => {
         }
         
     })
+}
+
+exports.finishStockDelivery = (req, res, next) => {
+    // TTN
+    // .updateOne(
+    //     {number: req.body.ttnNumber},
+    //     {status: "delivered"}
+    // )
+    // // TODO: Implement logic for restoring stock free area
+    // // next()
+    // .then(() => {
+        res.json({message: "Сargo delivered from stock"})
+    // })
 }
