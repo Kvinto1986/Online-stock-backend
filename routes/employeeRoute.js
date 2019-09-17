@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/EmployeeModel');
 const bcrypt = require('bcryptjs');
-const validateUserInput = require('../validation/userValidation');
 const generator = require('generate-password');
 const mailer = require('../utils/mailSender');
 const passport = require('passport');
@@ -70,15 +69,15 @@ router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
         User.find({company})
             .then(warehouse => {
 
-                const list=warehouse.map((elem=>{
+                const list = warehouse.map((elem => {
                     return {
-                        id:elem._id,
-                        position:elem.position,
-                        firstName:elem.firstName,
-                        patronymic:elem.patronymic,
-                        lastName:elem.lastName,
-                        email:elem.email,
-                        dateOfBirth:elem.dateOfBirth,
+                        id: elem._id,
+                        position: elem.position,
+                        firstName: elem.firstName,
+                        patronymic: elem.patronymic,
+                        lastName: elem.lastName,
+                        email: elem.email,
+                        dateOfBirth: elem.dateOfBirth,
                     }
                 }));
                 res.json(list)
@@ -88,14 +87,38 @@ router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
 
 router.delete('/:id', passport.authenticate('jwt', {session: false}), (req, res) => {
     if (req.user.role === 'companyAdmin') {
-       console.log(req.params.id)
-        User.findOne({_id:req.params.id}).then(user =>{
-            res.json(user)
+        User.findOne({_id: req.params.id}).then(user => {
+            res.json(user);
             user.remove().exec()
-        })}
-    else return res.status(400).json({
+        })
+    } else return res.status(400).json({
         user: 'This request is not available to you'
     });
-    });
+});
+
+router.get('/:id', (req, res) => {
+    User.findOne({_id: req.params.id}).then(user => {
+        if (user) {
+            res.json({
+                id: user._id,
+                position: user.position,
+                firstName: user.firstName,
+                patronymic: user.patronymic,
+                lastName: user.lastName,
+                email: user.email,
+                dateOfBirth: user.dateOfBirth,
+                city: user.city,
+                street: user.street,
+                house: user.house,
+                apartment: user.apartment,
+                company: user.company,
+            });
+        } else {
+            res.status(400).json({
+                user: 'User not found'
+            })
+        }
+    })
+});
 
 module.exports = router;
