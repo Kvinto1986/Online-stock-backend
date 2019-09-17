@@ -32,7 +32,8 @@ exports.getListCarriers = async (req, res) => {
         const transformArr = List.map((item) => {
                 return {
                     value: item.company,
-                    label: item.company.toLocaleUpperCase()
+                    label: item.company.toLocaleUpperCase(),
+                    id: item.id
                 }
             });
         res.send(transformArr);
