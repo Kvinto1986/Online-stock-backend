@@ -1,12 +1,12 @@
 
+
 const express = require('express');
 const TtnRouter = express.Router();
 const TTN = require('../models/ttnModal');
 const passport = require('passport');
 require('../passport')(passport);
-const {addTth, findTTNbyNumber, findTtn, getAll, getByID} = require("../controlles/ttnConttroles");
 
-const { addTth, findTTNbyNumber, findTtn, findWirehousedTtn, finishStockDelivery } = require("../controlles/ttnConttroles")
+const { addTth, findTTNbyNumber, findTtn, findWirehousedTtn, finishStockDelivery,getAll,getByID } = require("../controlles/ttnConttroles")
 TtnRouter.post('/addTtn', addTth)
 TtnRouter.post('/findTTNbyNumber', findTTNbyNumber)
 TtnRouter.get(`/:ttnNumber`, findTtn)

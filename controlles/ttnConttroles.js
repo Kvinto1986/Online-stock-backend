@@ -122,6 +122,8 @@ exports.getByID= (req, res) => {
             })
         }
     })
+}
+
 exports.finishStockDelivery = (req, res, next) => {
     // TTN
     // .updateOne(
