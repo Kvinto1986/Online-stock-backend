@@ -25,6 +25,7 @@ exports.addTth = async (req, res) => {
             carNumber: carNumber,
             sender: sender,
             products: products,
+
             description: description
         })
         res.send(ttn)
@@ -79,6 +80,7 @@ exports.findTTNbyNumber = (req, res) => {
 }
 
 exports.getAll =  (req, res) => {
+
         TTN.find({})
             .then(ttns => {
                 const list = ttns.map((elem => {
@@ -89,4 +91,16 @@ exports.getAll =  (req, res) => {
                 }));
                 res.json(list)
             });
+}
+
+exports.getByID= (req, res) => {
+    TTN.findOne({_id: req.params.id}).then(ttn => {
+        if (ttn) {
+            res.json(ttn);
+        } else {
+            res.status(400).json({
+                ttn: 'TTN not found'
+            })
+        }
+    })
 }
