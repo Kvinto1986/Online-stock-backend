@@ -9,7 +9,7 @@ const carrierRoute = require('./routes/carrierRoute');
 const ttnRoute = require('./routes/ttnRoute');
 const driver = require('./routes/driverRoute');
 const managerRoute = require('./routes/managerRoute');
-const getAllSender = require('./routes/senderRoute');
+const senders = require('./routes/senderRoute');
 const employee = require('./routes/employeeRoute');
 const warehouses = require('./routes/warehouseRoute');
 
@@ -27,7 +27,7 @@ app.use('/api/drivers', driver);
 app.use('/api/carriers', carrierRoute);
 app.use('/api/managers', managerRoute);
 app.use('/api/ttn', ttnRoute);
-app.use('/api/sender', getAllSender);
+app.use('/api/sender', senders);
 app.use('/api/ttn', ttnRoute);
 app.use('/api/warehouses', warehouses);
 
