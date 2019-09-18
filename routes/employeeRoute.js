@@ -7,57 +7,60 @@ const mailer = require('../utils/mailSender');
 const passport = require('passport');
 require('../passport')(passport);
 
-router.post('/', (req, res) => {
+router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
+    if (req.user.role === 'companyAdmin') {
+        const email = req.body.email;
 
-    const email = req.body.email;
+        User.findOne({email})
+            .then(user => {
+                if (user) {
+                    return res.status(400).json({
+                        email: 'Email already exists'
+                    });
+                } else {
 
-    User.findOne({email})
-        .then(user => {
-            if (user) {
-                return res.status(400).json({
-                    email: 'Email already exists'
-                });
-            } else {
+                    const password = generator.generate({
+                        length: 10,
+                        numbers: true
+                    });
 
-                const password = generator.generate({
-                    length: 10,
-                    numbers: true
-                });
+                    mailer(email, password);
 
-                mailer(email, password);
+                    const newUser = new User({
+                        firstName: req.body.firstName,
+                        lastName: req.body.lastName,
+                        patronymic: req.body.patronymic,
+                        email: email,
+                        city: req.body.city,
+                        street: req.body.street,
+                        house: req.body.house,
+                        apartment: req.body.apartment,
+                        position: req.body.position,
+                        dateOfBirth: req.body.dateOfBirth,
+                        password: password,
+                        company: req.user.company
+                    });
 
-                const newUser = new User({
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
-                    patronymic: req.body.patronymic,
-                    email: email,
-                    city: req.body.city,
-                    street: req.body.street,
-                    house: req.body.house,
-                    apartment: req.body.apartment,
-                    position: req.body.position,
-                    dateOfBirth: req.body.dateOfBirth,
-                    company: req.body.company,
-                    password: password
-                });
-
-                bcrypt.genSalt(10, (err, salt) => {
-                    if (err) console.error('There was an error', err);
-                    else {
-                        bcrypt.hash(newUser.password, salt, (err, hash) => {
-                            if (err) console.error('There was an error', err);
-                            else {
-                                newUser.password = hash;
-                                newUser.save()
-                                    .then(user => {
-                                        res.json(user)
-                                    });
-                            }
-                        });
-                    }
-                });
-            }
-        });
+                    bcrypt.genSalt(10, (err, salt) => {
+                        if (err) console.error('There was an error', err);
+                        else {
+                            bcrypt.hash(newUser.password, salt, (err, hash) => {
+                                if (err) console.error('There was an error', err);
+                                else {
+                                    newUser.password = hash;
+                                    newUser.save()
+                                        .then(user => {
+                                            res.json(user)
+                                        });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+    } else return res.status(400).json({
+        user: 'This request is not available to you'
+    });
 });
 
 router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {

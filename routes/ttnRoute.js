@@ -1,5 +1,3 @@
-
-
 const express = require('express');
 const TtnRouter = express.Router();
 const TTN = require('../models/ttnModal');
@@ -9,7 +7,7 @@ require('../passport')(passport);
 const { addTth, findTTNbyNumber, findTtn, findWirehousedTtn, finishStockDelivery,getAll,getByID } = require("../controlles/ttnConttroles")
 TtnRouter.post('/addTtn', addTth)
 TtnRouter.post('/findTTNbyNumber', findTTNbyNumber)
-TtnRouter.get(`/:ttnNumber`, findTtn)
+//TtnRouter.get(`/:ttnNumber`, findTtn)
 TtnRouter.get('/wirehousedTtn/:ttnNumber', findWirehousedTtn)
 TtnRouter.post(`/finishStockDelivery`, finishStockDelivery)
 //TtnRouter.get(`/:ttnNumber`, findTtn)
