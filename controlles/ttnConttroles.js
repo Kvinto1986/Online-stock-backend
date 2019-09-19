@@ -12,7 +12,9 @@ exports.addTth = async (req, res) => {
             carNumber,
             sender,
             products,
-            description
+            description,
+            warehouseID,
+            warehouseAreas
         } = req.body;
         const ttn  = await TTN.create({
             number: number,
@@ -23,7 +25,9 @@ exports.addTth = async (req, res) => {
             carNumber: carNumber,
             sender: sender,
             products: products,
-            description: description
+            description: description,
+            warehouseID: warehouseID,
+            warehouseAreas: warehouseAreas 
         })
         res.send(ttn)
     } catch (e) {
@@ -39,26 +43,8 @@ exports.findTtn = async (req, res) => {
     })
 }
 
-exports.findWirehousedTtn = async (req, res) => {
-    const{ ttnNumber } = req.params
-
-    TTN.findOne({number: ttnNumber}, (err, ttn) => {
-        if(err) {
-            return console.error(err)
-        } 
-        else {
-            if(ttn.status === "warehoused") {
-                res.send(ttn)
-            }
-            else {
-                return res.status(400).json({notFound: "TTN not found"})
-            }
-        }
-    })
-}
-
 exports.findTTNbyNumber = (req, res) => {
-    TTN
+    TTN // TODO: Find by checked status
     .findOne({number: req.body.ttnNumber, status: 'registred'})
     .then(result => {
         if (result !== null) {
@@ -85,22 +71,43 @@ exports.findTTNbyNumber = (req, res) => {
         }
         else {
             return res.status(400).json({
-                warehouseTtn: "TTN with this number not found or it already has been warehoused."
+                warehouseTtn: "TTN with this number not found or already has been warehoused."
             });
         }
         
     })
 }
 
-exports.finishStockDelivery = (req, res, next) => {
-    // TTN
-    // .updateOne(
-    //     {number: req.body.ttnNumber},
-    //     {status: "delivered"}
-    // )
-    // // TODO: Implement logic for restoring stock free area
-    // // next()
-    // .then(() => {
-        res.json({message: "Сargo delivered from stock"})
-    // })
+exports.editTTN = (req, res, next) => {
+    // TTN status change
+
+    TTN
+    .updateOne(
+        {number: req.body.ttnNumber},
+        {status: "delivered"}
+    )
+    .then(ttn => {
+        // ttn = req.ttn
+        // next()
+
+        // Restore stock areas
+        Warehouse
+        .findOne({ttnNumber: req.ttn.number})
+        .then(stock => {
+            const restoredArea = stock.totalArea + usedArea
+            // const restoredAreas = {...ar}
+
+            stock.areas.forEach(area => {
+                area.index
+            })
+
+            stock
+            .update({totalArea: restoredArea, areas: restoredAreas})
+            .then(() => {
+                res.json({message: "Сargo delivered from stock"})
+            })
+            .catch(err => console.error(err))
+        })
+    })
+    .catch(err => console.error(err))
 }

@@ -22,12 +22,18 @@ const WarehouseSchema = new Schema({
         type: Array,
         required: true
     },
-
     date: {
         type: Date,
         default: Date.now
     },
-
+    initialFreeArea: {
+        type: Number,
+        required: true
+    },
+    initialAreasState: {
+        type: Array,
+        required: true
+    }
 });
 
 const Warehouse = mongoose.model('warehouses', WarehouseSchema);

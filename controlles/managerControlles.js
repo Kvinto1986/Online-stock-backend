@@ -1,9 +1,6 @@
 const TTN = require('../models/ttnModal');
 const Warehouse = require('../models/WarehouseModel');
 
-// TODO: registerDelivery logic ...
-exports.registerDelivery = (req, res) => {}
-
 exports.finishWarehausing = (req, res) => {
     const { stockData, wareHousingData } = req.body
 
@@ -11,25 +8,47 @@ exports.finishWarehausing = (req, res) => {
     .map(unit => unit.area)
     .reduce((a, b) => a + b)
 
-    // Change TTN status
-    const changeTtnStatus = TTN
+    const goodsArea = {...stockData.areas}
+
+    goodsArea.areas.forEach((element, i) => {
+        const initialAreaUnit = stockData.areas.find(area => area.index === (i + 1))
+        const changedAreaUnit = wareHousingData.areasData.find(area => area.index === (i + 1))
+        element.area = initialAreaUnit.area - changedAreaUnit.area
+    });
+
+    // TTN update
+    // 1. Change TTN status 
+    // 2. Set the relation with warehouse by that id 
+    // 3. Set warehoused area by cargo
+    const updateTTN = 
+    TTN
     .findOneAndUpdate(
         {_id: wareHousingData.formData._id}, 
-        {$set: { status: 'warehoused' }},
-        { useNewUrlParser: true }
+        {$set: {
+            status: 'warehoused', 
+            warehouseID: stockData._id,
+            warehouseAreas: goodsArea
+        }},
+        {useNewUrlParser: true}
     )
 
-    // Update stock area states
-    const updateStockAreaStates =  Warehouse
+    // Warehouse update
+    // 1. Update total free warehouse area 
+    // 2. Update warehouse areas state
+    const updateWarehouse =  
+    Warehouse
     .findOneAndUpdate(
         {_id: stockData._id},
-        {$set: { areas: wareHousingData.areasData, totalArea }},
+        {$set: { 
+            totalArea: totalArea,
+            areas: wareHousingData.areasData,
+        }},
         { useNewUrlParser: true }
     )
 
     Promise.all([
-        changeTtnStatus,
-        updateStockAreaStates
+        updateTTN, 
+        updateWarehouse
     ])
     .then(() => {
         res.json()
