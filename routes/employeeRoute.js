@@ -50,7 +50,20 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
                                     newUser.password = hash;
                                     newUser.save()
                                         .then(user => {
-                                            res.json(user)
+                                            res.json({
+                                                id: user._id,
+                                                firstName: user.firstName,
+                                                lastName: user.lastName,
+                                                patronymic: user.patronymic,
+                                                email: user.email,
+                                                city: user.city,
+                                                street: user.street,
+                                                house: user.house,
+                                                apartment: user.apartment,
+                                                position: user.position,
+                                                dateOfBirth: user.dateOfBirth,
+                                                company: user.company
+                                            })
                                         });
                                 }
                             });
