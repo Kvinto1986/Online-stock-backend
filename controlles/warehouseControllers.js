@@ -16,6 +16,8 @@ exports.addWarehouse = (req, res) => {
                     license: req.body.license,
                     totalArea: req.body.totalArea,
                     areas: req.body.areas,
+                    initialFreeArea: req.body.totalArea,
+                    initialAreasState: req.body.areas
                 });
                 newWarehouse.save()
                     .then(warehouse => {

@@ -50,6 +50,12 @@ const tthScheema = new Schema({
     description: {
         type: String,
     },
+    warehouseID: {
+        type: String,
+    },
+    warehouseAreas: {
+        type: Array,
+    }
 });
 
 const tth = mongoose.model('ttn', tthScheema);
