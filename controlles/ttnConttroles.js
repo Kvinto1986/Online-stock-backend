@@ -46,8 +46,8 @@ exports.findTtn = async (req, res) => {
 }
 
 exports.findTTNbyNumber = (req, res) => {
-    TTN
-        .findOne({number: req.body.ttnNumber, status: 'registred'})
+    console.log(req.body)
+    TTN.findOne({number: req.body.ttnNumber, status: 'Checked'})
         .then(result => {
             if (result !== null) {
                 // If we're need to calculate area for each of cargo unit
@@ -79,7 +79,7 @@ exports.findTTNbyNumber = (req, res) => {
         })
 }
 
-exports.getAll =  (req, res) => {
+exports.getAll = (req, res) => {
 
     TTN.find({})
         .then(ttns => {
@@ -93,9 +93,25 @@ exports.getAll =  (req, res) => {
         });
 }
 
-exports.getByID= (req, res) => {
+exports.getByID = (req, res) => {
+
     TTN.findOne({_id: req.params.id}).then(ttn => {
         if (ttn) {
+            console.log(ttn)
+            res.json(ttn);
+        } else {
+            res.status(400).json({
+                ttn: 'TTN not found'
+            })
+        }
+    })
+}
+
+exports.getByNumber = (req, res) => {
+
+    TTN.findOne({number: req.params.number}).then(ttn => {
+        if (ttn) {
+            console.log(ttn)
             res.json(ttn);
         } else {
             res.status(400).json({

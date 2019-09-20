@@ -104,7 +104,9 @@ router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
 router.delete('/:id', passport.authenticate('jwt', {session: false}), (req, res) => {
     if (req.user.role === 'companyAdmin') {
         User.findOne({_id: req.params.id}).then(user => {
-            res.json(user);
+            res.status(200).json({
+                user: 'Deleted!'
+            });
             user.remove().exec()
         })
     } else return res.status(400).json({

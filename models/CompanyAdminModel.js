@@ -15,6 +15,10 @@ const CompanyAdminSchema = new mongoose.Schema({
 
     deleteDate: {
         type: Date,
+    },
+
+    congratulationTemplate:{
+        type: String
     }
 
 });

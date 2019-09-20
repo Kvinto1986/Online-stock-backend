@@ -4,7 +4,7 @@ exports.addDriver = async (req, res) => {
     const {email, name, surname, drivingLicense} = req.body;
     try {
         const driver = await Driver.findOne({drivingLicense: drivingLicense})
-        if (!!driver) {
+        if (!driver) {
             Driver.create({
                 email: email,
                 name: name,
