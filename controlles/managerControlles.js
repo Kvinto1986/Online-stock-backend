@@ -3,13 +3,13 @@ const Warehouse = require('../models/WarehouseModel');
 
 exports.finishWarehausing = (req, res) => {
     const { stockData, wareHousingData } = req.body
-
+    
     const totalArea = wareHousingData.areasData
     .map(unit => unit.area)
     .reduce((a, b) => a + b)
 
-    const goodsArea = {...stockData.areas}
-    goodsArea.areas.forEach((element, i) => {
+    const goodsArea = [...stockData.areas]
+    goodsArea.forEach((element, i) => {
         const initialAreaUnit = stockData.areas.find(area => area.index === (i + 1))
         const changedAreaUnit = wareHousingData.areasData.find(area => area.index === (i + 1))
         element.area = initialAreaUnit.area - changedAreaUnit.area

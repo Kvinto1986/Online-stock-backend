@@ -1,4 +1,5 @@
 const TTN = require('../models/ttnModal');
+const Warehouse = require('../models/WarehouseModel')
 const passport = require('passport');
 require('../passport')(passport);
 
@@ -25,7 +26,8 @@ exports.addTth = async (req, res) => {
             carNumber: carNumber,
             sender: sender,
             products: products,
-
+            warehouseID: '',
+            warehouseAreas: [],
             description: description
         })
         res.send(ttn)
@@ -46,43 +48,43 @@ exports.findTtn = async (req, res) => {
 }
 
 exports.findTTNbyNumber = (req, res) => {
-    TTN.findOne({number: req.body.ttnNumber, status: 'registred'})
-        .then(result => {
-            if (result !== null) {
-                // If we're need to calculate area for each of cargo unit
-                if (req.body.calculateAreaFlag) {
-                    result.products
-                        .forEach(product => {
-                            switch (product.type) {
-                                case 'BOX':
-                                    // TODO: Yury
-                                    // Type of products amount should be Number, not String
-                                    product.size = Number(product.amount) // Fix this
-                                    break;
-                                case 'KG':
-                                    product.size = product.amount / 100
-                                    break;
-                                default:
-                                    break;
-                            }
-                        });
-                }
-
-                res.send(result)
-            } else {
-                return res.status(400).json({
-                    warehouseTtn: "TTN with this number not found or it already has been warehoused."
-                });
+    TTN
+    .findOne({number: req.body.ttnNumber, status: 'checked'})
+    .then(result => {
+        if (result !== null) {
+            // If we're need to calculate area for each of cargo unit
+            if (req.body.calculateAreaFlag) {
+                result.products
+                    .forEach(product => {
+                        switch (product.type) {
+                            case 'BOX':
+                                // TODO: Yury
+                                // Type of products amount should be Number, not String
+                                product.size = Number(product.amount) // Fix this
+                                break;
+                            case 'KG':
+                                product.size = product.amount / 100
+                                break;
+                            default:
+                                break;
+                        }
+                    });
             }
 
-        })
+            res.send(result)
+        } else {
+            return res.status(400).json({
+                warehouseTtn: "TTN with this number not found or it already has been warehoused."
+            });
+        }
+    })
 }
 
 exports.editTTN = (req, res, next) => {
+    
     TTN
-    .findOne({ttnNumber: req.body.number})
+    .findOne({number: req.body.ttnNumber})
     .then(ttn => {
-
         // TTN status change
         ttn.status = "delivered"
         ttn.save()
@@ -93,7 +95,7 @@ exports.editTTN = (req, res, next) => {
         .then(stock => {
             let recoveredArea = 0 
 
-            const recoveredAreasState = {...stock.areas}
+            const recoveredAreasState = [...stock.areas]
             recoveredAreasState.forEach((element, i) => {
                 const currentAreaUnit = stock.areas.find(area => area.index === (i + 1))
                 const warehousedAreaUnit = ttn.warehouseAreas.find(area => area.index === (i + 1))
@@ -106,7 +108,7 @@ exports.editTTN = (req, res, next) => {
             stock.areas = recoveredAreasState
 
             stock.save()
-
+            
             res.json({message: "Сargo delivered from stock"})
         })
     })
@@ -130,7 +132,6 @@ exports.getByID = (req, res) => {
 
     TTN.findOne({_id: req.params.id}).then(ttn => {
         if (ttn) {
-            console.log(ttn)
             res.json(ttn);
         } else {
             res.status(400).json({
@@ -141,10 +142,8 @@ exports.getByID = (req, res) => {
 }
 
 exports.getByNumber = (req, res) => {
-
     TTN.findOne({number: req.params.number}).then(ttn => {
         if (ttn) {
-            console.log(ttn)
             res.json(ttn);
         } else {
             res.status(400).json({

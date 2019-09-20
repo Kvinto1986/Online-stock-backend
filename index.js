@@ -31,7 +31,7 @@ app.use('/api/drivers', driver);
 app.use('/api/carriers', carrierRoute);
 app.use('/api/managers', managerRoute);
 app.use('/api/ttn', ttnRoute);
-app.use('/api/sender', senders);
+app.use('/api/senders', senders);
 app.use('/api/ttn', ttnRoute);
 app.use('/api/warehouses', warehouses);
 
