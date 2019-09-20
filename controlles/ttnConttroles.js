@@ -14,9 +14,7 @@ exports.addTth = async (req, res) => {
             carNumber,
             sender,
             products,
-            description,
-            warehouseID,
-            warehouseAreas
+            description
         } = req.body;
         const ttn = await TTN.create({
             number: number,
@@ -27,9 +25,8 @@ exports.addTth = async (req, res) => {
             carNumber: carNumber,
             sender: sender,
             products: products,
-            description: description,
-            warehouseID: warehouseID,
-            warehouseAreas: warehouseAreas 
+
+            description: description
         })
         res.send(ttn)
     } catch (e) {
@@ -49,38 +46,52 @@ exports.findTtn = async (req, res) => {
 }
 
 exports.findTTNbyNumber = (req, res) => {
-    TTN // TODO: Find by checked status
-    .findOne({number: req.body.ttnNumber, status: 'registred'})
-    .then(result => {
-        if (result !== null) {
-            // If we're need to calculate area for each of cargo unit
-            if (req.body.calculateAreaFlag) {
-                result.products
-                    .forEach(product => {
-                        switch (product.type) {
-                            case 'BOX':
-                                // TODO: Yury
-                                // Type of products amount should be Number, not String
-                                product.size = Number(product.amount) // Fix this
-                                break;
-                            case 'KG':
-                                product.size = product.amount / 100
-                                break;
-                            default:
-                                break;
-                        }
-                    });
+    TTN
+        .findOne({number: req.body.ttnNumber, status: 'registred'})
+        .then(result => {
+            if (result !== null) {
+                // If we're need to calculate area for each of cargo unit
+                if (req.body.calculateAreaFlag) {
+                    result.products
+                        .forEach(product => {
+                            switch (product.type) {
+                                case 'BOX':
+                                    // TODO: Yury
+                                    // Type of products amount should be Number, not String
+                                    product.size = Number(product.amount) // Fix this
+                                    break;
+                                case 'KG':
+                                    product.size = product.amount / 100
+                                    break;
+                                default:
+                                    break;
+                            }
+                        });
+                }
+
+                res.send(result)
+            } else {
+                return res.status(400).json({
+                    warehouseTtn: "TTN with this number not found or it already has been warehoused."
+                });
             }
 
-            res.send(result)
-        } else {
-            return res.status(400).json({
-                warehouseTtn: "TTN with this number not found or already has been warehoused."
-            });
-        }
-    })}
+        })
+}
 
+exports.getAll =  (req, res) => {
 
+    TTN.find({})
+        .then(ttns => {
+            const list = ttns.map((elem => {
+                return {
+                    value: elem._id,
+                    label: elem.number,
+                }
+            }));
+            res.json(list)
+        });
+}
 
 exports.getByID= (req, res) => {
     TTN.findOne({_id: req.params.id}).then(ttn => {
@@ -92,38 +103,4 @@ exports.getByID= (req, res) => {
             })
         }
     })
-}
-
-exports.editTTN = (req, res, next) => {
-    // TTN status change
-
-    TTN
-    .updateOne(
-        {number: req.body.ttnNumber},
-        {status: "delivered"}
-    )
-    .then(ttn => {
-        // ttn = req.ttn
-        // next()
-
-        // Restore stock areas
-        Warehouse
-        .findOne({ttnNumber: req.ttn.number})
-        .then(stock => {
-            const restoredArea = stock.totalArea + usedArea
-            // const restoredAreas = {...ar}
-
-            stock.areas.forEach(area => {
-                area.index
-            })
-
-            stock
-            .update({totalArea: restoredArea, areas: restoredAreas})
-            .then(() => {
-                res.json({message: "Сargo delivered from stock"})
-            })
-            .catch(err => console.error(err))
-        })
-    })
-    .catch(err => console.error(err))
 }
