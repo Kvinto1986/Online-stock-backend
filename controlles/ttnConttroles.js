@@ -1,9 +1,11 @@
 const TTN = require('../models/ttnModal');
+const passport = require('passport');
+require('../passport')(passport);
 
 exports.addTth = async (req, res) => {
 
     try {
-        const{
+        const {
             number,
             date,
             carrier,
@@ -16,7 +18,7 @@ exports.addTth = async (req, res) => {
             warehouseID,
             warehouseAreas
         } = req.body;
-        const ttn  = await TTN.create({
+        const ttn = await TTN.create({
             number: number,
             dataOfRegistration: date,
             carrier: carrier,
@@ -31,15 +33,18 @@ exports.addTth = async (req, res) => {
         })
         res.send(ttn)
     } catch (e) {
-        console.log(e)
     }
 }
 
 exports.findTtn = async (req, res) => {
-    const{ttnNumber} = req.params
-    TTN.findOne({number: ttnNumber}, (err, ttn) => {
-        if(err) return console.error(err)
-        res.send(ttn)
+
+    const {ttnNumber} = req.params
+    TTN.findOne({number: ttnNumber}).then((ttn) => {
+        if (ttn) {
+            res.send(ttn)
+        } else res.status(400).json({
+            ttn: 'TTN not found'
+        });
     })
 }
 
@@ -73,8 +78,18 @@ exports.findTTNbyNumber = (req, res) => {
             return res.status(400).json({
                 warehouseTtn: "TTN with this number not found or already has been warehoused."
             });
+}
+
+
+exports.getByID= (req, res) => {
+    TTN.findOne({_id: req.params.id}).then(ttn => {
+        if (ttn) {
+            res.json(ttn);
+        } else {
+            res.status(400).json({
+                ttn: 'TTN not found'
+            })
         }
-        
     })
 }
 
