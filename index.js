@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const{port, baseUri} = require('./dbconfig');
+const cronTimer = require('./utils/employeeCongratulation');
+const {port, baseUri} = require('./dbconfig');
 const mongoose = require("mongoose");
 const userLogin = require('./routes/loginRoute/index');
 const adminRoute = require('./routes/companyAdminRoute/index');
@@ -13,7 +14,10 @@ const senders = require('./routes/senderRoute');
 const employee = require('./routes/employeeRoute');
 const warehouses = require('./routes/warehouseRoute');
 
+
 const app = express();
+
+cronTimer();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -21,7 +25,7 @@ app.use(cors());
 
 app.use('/api/login', userLogin);
 app.use('/api/companyAdmins', adminRoute);
-app.use('/api/employee', employee);
+app.use('/api/employees', employee);
 
 app.use('/api/drivers', driver);
 app.use('/api/carriers', carrierRoute);
@@ -31,9 +35,13 @@ app.use('/api/sender', senders);
 app.use('/api/ttn', ttnRoute);
 app.use('/api/warehouses', warehouses);
 
-mongoose.connect(baseUri, { useNewUrlParser: true }).then(
-    () => {console.log('Database is connected') },
-    err => { console.log('Can not connect to the database'+ err)}
+mongoose.connect(baseUri, {useNewUrlParser: true}).then(
+    () => {
+        console.log('Database is connected')
+    },
+    err => {
+        console.log('Can not connect to the database' + err)
+    }
 );
 
 const PORT = process.env.PORT || port;
