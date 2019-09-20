@@ -47,7 +47,7 @@ exports.findTtn = async (req, res) => {
 
 exports.findTTNbyNumber = (req, res) => {
     console.log(req.body)
-    TTN.findOne({number: req.body.ttnNumber, status: 'Checked'})
+    TTN.findOne({number: req.body.ttnNumber, status: 'checked'})
         .then(result => {
             if (result !== null) {
                 // If we're need to calculate area for each of cargo unit
