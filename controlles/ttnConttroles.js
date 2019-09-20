@@ -79,35 +79,35 @@ exports.findTTNbyNumber = (req, res) => {
 }
 
 exports.editTTN = (req, res, next) => {
-    // TTN status change
-
     TTN
-    .updateOne(
-        {number: req.body.ttnNumber},
-        {status: "delivered"}
-    )
+    .findOne({ttnNumber: req.body.number})
     .then(ttn => {
-        // ttn = req.ttn
-        // next()
 
-        // Restore stock areas
+        // TTN status change
+        ttn.status = "delivered"
+        ttn.save()
+
+        // Warehouse areas status recovery
         Warehouse
-        .findOne({ttnNumber: req.ttn.number})
+        .findOne({_id: ttn.warehouseID})
         .then(stock => {
-            const restoredArea = stock.totalArea + usedArea
-            // const restoredAreas = {...ar}
+            let recoveredArea = 0 
 
-            stock.areas.forEach(area => {
-                area.index
-            })
+            const recoveredAreasState = {...stock.areas}
+            recoveredAreasState.forEach((element, i) => {
+                const currentAreaUnit = stock.areas.find(area => area.index === (i + 1))
+                const warehousedAreaUnit = ttn.warehouseAreas.find(area => area.index === (i + 1))
+                
+                recoveredArea += warehousedAreaUnit.area
+                element.area = currentAreaUnit.area + warehousedAreaUnit.area
+            });
 
-            stock
-            .update({totalArea: restoredArea, areas: restoredAreas})
-            .then(() => {
-                res.json({message: "Сargo delivered from stock"})
-            })
-            .catch(err => console.error(err))
+            stock.totalArea += recoveredArea 
+            stock.areas = recoveredAreasState
+
+            stock.save()
+
+            res.json({message: "Сargo delivered from stock"})
         })
     })
-    .catch(err => console.error(err))
 }

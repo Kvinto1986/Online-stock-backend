@@ -9,15 +9,14 @@ exports.finishWarehausing = (req, res) => {
     .reduce((a, b) => a + b)
 
     const goodsArea = {...stockData.areas}
-
     goodsArea.areas.forEach((element, i) => {
         const initialAreaUnit = stockData.areas.find(area => area.index === (i + 1))
         const changedAreaUnit = wareHousingData.areasData.find(area => area.index === (i + 1))
         element.area = initialAreaUnit.area - changedAreaUnit.area
     });
 
-    // TTN update
-    // 1. Change TTN status 
+    // TTN edit
+    // 1. Update TTN status 
     // 2. Set the relation with warehouse by that id 
     // 3. Set warehoused area by cargo
     const updateTTN = 
@@ -32,7 +31,7 @@ exports.finishWarehausing = (req, res) => {
         {useNewUrlParser: true}
     )
 
-    // Warehouse update
+    // Warehouse edit
     // 1. Update total free warehouse area 
     // 2. Update warehouse areas state
     const updateWarehouse =  
@@ -43,10 +42,11 @@ exports.finishWarehausing = (req, res) => {
             totalArea: totalArea,
             areas: wareHousingData.areasData,
         }},
-        { useNewUrlParser: true }
+        {useNewUrlParser: true}
     )
 
-    Promise.all([
+    Promise
+    .all([
         updateTTN, 
         updateWarehouse
     ])
