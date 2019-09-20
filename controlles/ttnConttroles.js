@@ -54,31 +54,32 @@ exports.findTTNbyNumber = (req, res) => {
     .then(result => {
         if (result !== null) {
             // If we're need to calculate area for each of cargo unit
-            if(req.body.calculateAreaFlag) {
+            if (req.body.calculateAreaFlag) {
                 result.products
-                .forEach(product => {
-                    switch (product.type) {
-                        case 'BOX':
-                            // TODO: Yury
-                            // Type of products amount should be Number, not String
-                            product.size = Number(product.amount) // Fix this
-                            break;
-                        case 'KG':
-                            product.size = product.amount / 100
-                            break;
-                        default:
-                            break;
-                    }
-                });
+                    .forEach(product => {
+                        switch (product.type) {
+                            case 'BOX':
+                                // TODO: Yury
+                                // Type of products amount should be Number, not String
+                                product.size = Number(product.amount) // Fix this
+                                break;
+                            case 'KG':
+                                product.size = product.amount / 100
+                                break;
+                            default:
+                                break;
+                        }
+                    });
             }
 
             res.send(result)
-        }
-        else {
+        } else {
             return res.status(400).json({
                 warehouseTtn: "TTN with this number not found or already has been warehoused."
             });
-}
+        }
+    })}
+
 
 
 exports.getByID= (req, res) => {
