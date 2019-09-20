@@ -8,9 +8,8 @@ exports.finishWarehausing = (req, res) => {
     .map(unit => unit.area)
     .reduce((a, b) => a + b)
 
-    const goodsArea = {...stockData.areas}
-
-    goodsArea.areas.forEach((element, i) => {
+    const goodsArea = [...stockData.areas]
+    goodsArea.forEach((element, i) => {
         const initialAreaUnit = stockData.areas.find(area => area.index === (i + 1))
         const changedAreaUnit = wareHousingData.areasData.find(area => area.index === (i + 1))
         element.area = initialAreaUnit.area - changedAreaUnit.area
