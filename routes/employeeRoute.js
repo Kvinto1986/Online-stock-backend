@@ -139,4 +139,28 @@ router.get('/:id', (req, res) => {
     })
 });
 
+router.post('/:id', (req, res) => {
+    User.findById(req.params.id)
+        .then((user) => {
+            if (user) {
+                user.firstName = req.body.firstName;
+                user.lastName = req.body.lastName;
+                user.patronymic = req.body.patronymic;
+                user.email = req.body.email;
+                user.city = req.body.city;
+                user.street = req.body.street;
+                user.house = req.body.house;
+                user.apartment = req.body.apartment;
+                user.position = req.body.position;
+                user.dateOfBirth = req.body.dateOfBirth;
+                user.save();
+                res.json(user)
+            } else {
+                res.status(400).json({
+                    user: 'User not found'
+                })
+            }
+        })
+});
+
 module.exports = router;
