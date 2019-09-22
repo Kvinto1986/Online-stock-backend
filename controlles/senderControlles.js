@@ -1,6 +1,7 @@
 const Sender = require('../models/senderModel');
 
 exports.getAllSenders = async (req, res) => {
+
     try {
         const senderList = await Sender.find({})
         const transformArr = senderList.map((item) => {
