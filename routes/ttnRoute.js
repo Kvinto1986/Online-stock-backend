@@ -1,18 +1,16 @@
 const express = require('express');
 const TtnRouter = express.Router();
-const TTN = require('../models/ttnModal');
-const passport = require('passport');
-require('../passport')(passport);
+const TTN = require('../models/TtnModel');
 const {addTth, findTTNbyNumber, editTTN, getAll, getByID,getByNumber} = require("../controlles/ttnConttroles");
 
-TtnRouter.post('/addTtn', addTth)
+TtnRouter.post('/', addTth)
 TtnRouter.post('/findTTNbyNumber/', findTTNbyNumber)
 TtnRouter.get('/', getAll)
 TtnRouter.get('/:id', getByID)
 TtnRouter.get('/getbyNumber/:number', getByNumber)
-TtnRouter.post('/editTTN', editTTN)
+TtnRouter.put('/:id', editTTN)
 
-TtnRouter.post('/edit', passport.authenticate('jwt', {session: false}), (req, res) => {
+TtnRouter.post('/edit', (req, res) => {
     if (req.user.position.includes('controller')) {
 
         TTN.findById(req.body.id).then(ttn => {

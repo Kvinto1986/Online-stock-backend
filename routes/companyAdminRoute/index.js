@@ -6,11 +6,8 @@ const validateAdminInput = require('../../validation/companyAdminValidation');
 const generator = require('generate-password');
 const mailer = require('../../utils/mailSender');
 const {getStatistic, getList, getCompany, changeStatus} = require('../../controlles/adminControllers');
-const passport = require('passport/lib');
-require('../../passport')(passport);
 
-
-adminRouter.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
+adminRouter.post('/', (req, res) => {
 
 
     if (req.user.role === 'mainAdmin') {
