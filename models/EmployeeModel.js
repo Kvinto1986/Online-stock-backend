@@ -24,14 +24,13 @@ module.exports = Users.discriminator('employee', new mongoose.Schema({
         required: true
     },
     house: {
-        type: Number,
+        type: String,
         required: true
     },
     apartment: {
-        type: Number,
+        type: String,
         required: true
     },
-
 
     dateOfBirth: {
         type: Date,

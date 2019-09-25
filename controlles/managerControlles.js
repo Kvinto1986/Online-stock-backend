@@ -1,4 +1,4 @@
-const TTN = require('../models/ttnModal');
+const TTN = require('../models/TtnModel');
 const Warehouse = require('../models/WarehouseModel');
 
 exports.finishWarehausing = (req, res) => {
@@ -19,6 +19,7 @@ exports.finishWarehausing = (req, res) => {
     // 1. Update TTN status 
     // 2. Set the relation with warehouse by that id 
     // 3. Set warehoused area by cargo
+
     const updateTTN = 
     TTN
     .findOneAndUpdate(
