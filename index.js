@@ -1,39 +1,15 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const cronTimer = require('./utils/employeeCongratulation');
-const {port, baseUri} = require('./dbconfig');
-const mongoose = require("mongoose");
-const userLogin = require('./routes/loginRoute/index');
-const adminRoute = require('./routes/companyAdminRoute/index');
-const carrierRoute = require('./routes/carrierRoute');
-const ttnRoute = require('./routes/ttnRoute');
-const driver = require('./routes/driverRoute');
-const managerRoute = require('./routes/managerRoute');
-const senders = require('./routes/senderRoute');
-const employee = require('./routes/employeeRoute');
-const warehouses = require('./routes/warehouseRoute');
-
-
 const app = express();
+const router = require('./routes');
+const mongoose = require("mongoose");
+mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
+const congratulationsSender = require('./utils/employeeCongratulation');
+const {port, baseUri} = require('./dbconfig');
 
-cronTimer();
+congratulationsSender();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(cors());
-
-app.use('/api/login', userLogin);
-app.use('/api/companyAdmins', adminRoute);
-app.use('/api/employees', employee);
-
-app.use('/api/drivers', driver);
-app.use('/api/carriers', carrierRoute);
-app.use('/api/managers', managerRoute);
-app.use('/api/ttn', ttnRoute);
-app.use('/api/senders', senders);
-app.use('/api/ttn', ttnRoute);
-app.use('/api/warehouses', warehouses);
+app.use('/', router);
 
 mongoose.connect(baseUri, {useNewUrlParser: true}).then(
     () => {
@@ -45,7 +21,6 @@ mongoose.connect(baseUri, {useNewUrlParser: true}).then(
 );
 
 const PORT = process.env.PORT || port;
-
 app.listen(PORT, () => {
     console.log(`Server is running on PORT ${PORT}`);
 });
