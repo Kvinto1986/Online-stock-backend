@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const router = require('./routes');
 const mongoose = require("mongoose");
 mongoose.set('useCreateIndex', true);
@@ -8,8 +10,10 @@ const congratulationsSender = require('./utils/employeeCongratulation');
 const {port, baseUri} = require('./dbconfig');
 
 congratulationsSender();
-
-app.use('/', router);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(cors());
+app.use('/api', router);
 
 mongoose.connect(baseUri, {useNewUrlParser: true}).then(
     () => {
