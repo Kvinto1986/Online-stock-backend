@@ -1,4 +1,4 @@
-const Sender = require('../models/senderModel');
+const Sender = require('../models/SenderModel');
 
 exports.getAllSenders = async (req, res) => {
     try {

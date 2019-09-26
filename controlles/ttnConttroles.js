@@ -1,7 +1,6 @@
-const TTN = require('../models/ttnModal');
+const TTN = require('../models/TtnModel');
 const Warehouse = require('../models/WarehouseModel')
-const passport = require('passport');
-require('../passport')(passport);
+
 
 exports.addTth = async (req, res) => {
 

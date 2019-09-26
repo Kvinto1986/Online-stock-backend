@@ -1,4 +1,4 @@
-const Driver = require('../models/driverModel');
+const Driver = require('../models/DriverModel');
 
 exports.addDriver = async (req, res) => {
     const {email, name, surname, drivingLicense} = req.body;
