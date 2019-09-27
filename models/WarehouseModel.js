@@ -22,17 +22,21 @@ const WarehouseSchema = new Schema({
         type: Array,
         required: true
     },
+
+    company: {
+        type: String,
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now
     },
     initialFreeArea: {
         type: Number,
-        required: true
+        default: 0
     },
     initialAreasState: {
         type: Array,
-        required: true
     }
 });
 
