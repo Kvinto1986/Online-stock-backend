@@ -1,11 +1,7 @@
-const Employee = require('../../models/EmployeeModel');
+const Employee = require('../models/EmployeeModel');
 const generator = require('generate-password');
-const mailer = require('../../utils/mailSender');
-
-const changeEmployeeForResult = function (employeeModel) {
-    const {_id: id, password, __v, ...user} = employeeModel.toObject();
-    return {...user, id}
-};
+const mailer = require('../utils/mailSender');
+const changeEmployeeForResult=require('../utils/objectNormalizer');
 
 exports.createEmployee = async (req, res) => {
     const {body} = req;
