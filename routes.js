@@ -9,7 +9,6 @@ const ttns = require('./routes/ttnRoutes');
 const carriers = require('./routes/carrierRoute');
 const drivers = require('./routes/driverRoute');
 const senders = require('./routes/senderRoute');
-const managers = require('./routes/managerRoute');
 
 app.use('/login', login);
 app.use('/employees', employees);
@@ -20,7 +19,6 @@ app.use('/carriers', carriers);
 app.use('/ttns', ttns);
 app.use('/drivers', drivers);
 app.use('/senders', senders);
-app.use('/managers', managers);
 
 
 
