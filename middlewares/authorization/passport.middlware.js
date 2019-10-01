@@ -1,4 +1,4 @@
-const passport = require('../passport');
+const passport = require('../../passport');
 
 module.exports.AUTH = (roles) => (req, res, next) => {
     passport.authenticate('jwt', { session: false }, function(err, user) {

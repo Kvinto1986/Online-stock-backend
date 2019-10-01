@@ -2,10 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CarrierSchema = new Schema({
-    passportNumber: {
-        type: Number,
-        required: true,
-        unique: true
+    unp: {
+        type: String,
+        required: true
     },
     countryCode: {
         type: String,

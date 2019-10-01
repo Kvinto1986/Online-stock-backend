@@ -15,10 +15,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
 app.use('/api', router);
 
-mongoose.connect(baseUri, {useNewUrlParser: true}).then(
-    () => {
-        console.log('Database is connected')
-    },
+mongoose.connect(baseUri, {useNewUrlParser: true}).then(() => {
+        console.log('Database is connected')},
     err => {
         console.log('Can not connect to the database' + err)
     }

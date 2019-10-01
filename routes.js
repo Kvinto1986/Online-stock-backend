@@ -5,24 +5,23 @@ const employees = require('./routes/employeeRoutes');
 const companyAdmins = require('./routes/companyAdminRoutes');
 const companyAdminsStatistic = require('./routes/companyAdminStatisticRoute');
 const warehouses = require('./routes/warehouseRoute');
-
-const carrierRoute = require('./routes/carrierRoute');
-const ttnRoute = require('./routes/ttnRoute');
-const driver = require('./routes/driverRoute');
-const managerRoute = require('./routes/managerRoute');
+const ttns = require('./routes/ttnRoutes');
+const carriers = require('./routes/carrierRoute');
+const drivers = require('./routes/driverRoute');
 const senders = require('./routes/senderRoute');
+const managers = require('./routes/managerRoute');
 
 app.use('/login', login);
 app.use('/employees', employees);
 app.use('/companyAdmins', companyAdmins);
 app.use('/companyAdminsStatistic', companyAdminsStatistic);
 app.use('/warehouses', warehouses);
-
-app.use('/drivers', driver);
-app.use('/carriers', carrierRoute);
-app.use('/managers', managerRoute);
-app.use('/ttns', ttnRoute);
+app.use('/carriers', carriers);
+app.use('/ttns', ttns);
+app.use('/drivers', drivers);
 app.use('/senders', senders);
+app.use('/managers', managers);
+
 
 
 module.exports = app;

@@ -1,7 +1,7 @@
 const express = require('express');
-const SenderRoute = express.Router();
-const { getAllSenders } = require("../controlles/senderControlles");
+const route = express.Router();
+const { getSenders } = require("../controllers/senderControlles");
 
-SenderRoute.get('/', getAllSenders);
+route.get('/', getSenders);
 
-module.exports = SenderRoute;
+module.exports = route;
