@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/passport.middlware');
+const auth = require('../middlewares/authorization/passport.middlware');
 const {MAIN_ADMIN} = require('../constants/roles');
 const {createCompanyAdmin,getCompanyAdmins,getCompanyAdmin,editCompanyAdmin,deleteCompanyAdmin} = require('../controllers/companyAdminControllers');
 

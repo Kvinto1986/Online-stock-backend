@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const driverScheema = new Schema({
-    drivingLicense: {
+    driverLicense: {
         type: Number,
         required: true,
         unique: true

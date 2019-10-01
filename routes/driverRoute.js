@@ -1,8 +1,10 @@
 const express = require('express');
-const DriverRouter = express.Router();
-const{addDriver, getDriver} = require("../controlles/driversConrolles");;
+const router = express.Router();
+const auth = require('../middlewares/authorization/passport.middlware');
+const {COMPANY_ADMIN, EMPLOYEE} = require('../constants/roles');
+const{createDriver, getDriver} = require("../controllers/driversConrollers");
 
-DriverRouter.post('/addDriver', addDriver);
-DriverRouter.get('/:license', getDriver);
+router.post('/', auth.AUTH([COMPANY_ADMIN, EMPLOYEE]), createDriver);
+router.get('/:id', auth.AUTH([COMPANY_ADMIN, EMPLOYEE]), getDriver);
 
-module.exports = DriverRouter
+module.exports = router;

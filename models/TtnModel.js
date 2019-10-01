@@ -17,11 +17,11 @@ const tthScheema = new Schema({
     },
     dataOfRegistration: {
         type: Date,
-        required: true
+        default: Date.now
     },
     sender: {
-      type: String,
-      required: true
+        type: String,
+        required: true
     },
     carrier: {
         type: String,
@@ -55,7 +55,11 @@ const tthScheema = new Schema({
     },
     warehouseAreas: {
         type: Array,
-    }
+    },
+    company: {
+        type: String,
+        required: true
+    },
 });
 
 const tth = mongoose.model('ttn', tthScheema);
