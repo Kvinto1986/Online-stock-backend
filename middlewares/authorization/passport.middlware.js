@@ -16,8 +16,7 @@ module.exports.AUTH = (availableRoles, employeePosition) => (req, res, next) => 
             })
         }
 
-        if (availableRoles.includes(EMPLOYEE)) {
-
+        if (availableRoles.includes(EMPLOYEE) && user.role === 'employee') {
             user.position.map(elem => {
                 if (!employeePosition.includes(elem)) {
                     return res.status(403).json({
