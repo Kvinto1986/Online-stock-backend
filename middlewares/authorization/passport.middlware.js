@@ -16,13 +16,19 @@ module.exports.AUTH = (availableRoles, employeePosition) => (req, res, next) => 
             })
         }
 
-        if (availableRoles.includes(EMPLOYEE) && !user.position.includes(employeePosition)) {
-            return res.status(403).json({
-                user: 'This request is not available to you'
+        if (availableRoles.includes(EMPLOYEE)) {
+
+            user.position.map(elem => {
+                if (!employeePosition.includes(elem)) {
+                    return res.status(403).json({
+                        user: 'This request is not available to you'
+                    })
+                }
             })
         }
 
         req.user = user;
-        next();
-    })(req, res, next);
+        next()
+    })
+    (req, res, next);
 };
