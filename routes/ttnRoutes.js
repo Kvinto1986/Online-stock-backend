@@ -6,6 +6,6 @@ const {createTTN, getTTN, editTTN} = require('../controllers/ttnControllers');
 
 router.post('', auth.AUTH([EMPLOYEE], EMPLOYEE_OPERATOR), createTTN);
 router.post('/:id', auth.AUTH([EMPLOYEE], EMPLOYEE_CONTROLLER, EMPLOYEE_MANAGER), editTTN);
-router.get('/:id', auth.AUTH([EMPLOYEE], EMPLOYEE_OPERATOR, EMPLOYEE_CONTROLLER, EMPLOYEE_MANAGER), getTTN);
+router.get('/:id', auth.AUTH([EMPLOYEE], EMPLOYEE_MANAGER), getTTN);
 
 module.exports = router;
