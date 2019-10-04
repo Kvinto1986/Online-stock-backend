@@ -17,7 +17,7 @@ exports.createDriver = async (req, res) => {
 }
 
 exports.getDriver = async (req, res) => {
-    const dbDriver = await Driver.findOne({driverLicense: req.params.id});
+    const dbDriver = await Driver.findOne({license: req.params.id});
     if (!dbDriver) {
         return res.status(400).json({
             driver: 'Driver not found'

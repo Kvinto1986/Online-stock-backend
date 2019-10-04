@@ -19,12 +19,12 @@ const tthScheema = new Schema({
         type: Date,
         default: Date.now
     },
-    sender: {
+    owner: {
         type: String,
         required: true
     },
     carrier: {
-        type: String,
+        type: Object,
         required: true
     },
     registrar: {
@@ -32,7 +32,7 @@ const tthScheema = new Schema({
         required: true
     },
     driver: {
-        type: String,
+        type: Object,
         required: true
     },
     carNumber: {
@@ -45,7 +45,6 @@ const tthScheema = new Schema({
     },
     reports: {
         type: Array,
-        required: true
     },
     description: {
         type: String,
@@ -56,7 +55,7 @@ const tthScheema = new Schema({
     warehouseAreas: {
         type: Array,
     },
-    company: {
+    warehouseCompany: {
         type: String,
         required: true
     },
