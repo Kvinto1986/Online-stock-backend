@@ -3,10 +3,10 @@ const changeDriverForResult = require('../utils/objectNormalizer');
 
 exports.createDriver = async (req, res) => {
     const {body} = req;
-    const dbDriver = await Driver.findOne({driverLicense: body.driverLicense});
+    const dbDriver = await Driver.findOne({license: body.license});
     if (dbDriver) {
         return res.status(400).json({
-            license: 'Driver License license name already exists'
+            license: 'Driver license name already exists'
         });
     }
 

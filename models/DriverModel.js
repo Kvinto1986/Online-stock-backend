@@ -2,13 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const driverScheema = new Schema({
-    driverLicense: {
+    license: {
         type: Number,
         required: true,
         unique: true
-    },
-    email: {
-        type: String
     },
     name: {
         type: String,

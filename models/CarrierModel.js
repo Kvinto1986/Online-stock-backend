@@ -11,7 +11,8 @@ const CarrierSchema = new Schema({
         required: true
     },
     email: {
-        type: String
+        type: String,
+        required: true
     },
     tel: {
         type: String,
@@ -19,8 +20,8 @@ const CarrierSchema = new Schema({
     },
     company: {
         type: String,
+        required: true
     },
-    isDisabled: false
 });
 
 const Carrier = mongoose.model('carrier', CarrierSchema);

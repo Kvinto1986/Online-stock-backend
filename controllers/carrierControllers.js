@@ -3,11 +3,10 @@ const changeCarrierForResult = require('../utils/objectNormalizer');
 
 exports.createCarrier = async (req, res) => {
     const {body} = req;
-
     const dbCarrier = await Carrier.findOne({unp: body.unp});
     if (dbCarrier) {
         return res.status(400).json({
-            carrier: 'UNP already exists'
+            unp: 'UNP already exists'
         });
     }
 
