@@ -21,7 +21,7 @@ exports.login = async (req, res) => {
     }
 
     const user=changeUserForResult(dbUser);
-    
+
     jwt.sign(user, 'secret', {expiresIn: 3600}, (err, token) => {
         if (err) {
             return res.status(400).json({password: 'There is some error in token'})
