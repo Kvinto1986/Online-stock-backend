@@ -2,7 +2,7 @@ const TTN = require('../models/TtnModel');
 const Warehouse = require('../models/WarehouseModel');
 const { validateWarehousingData } = require('../middlewares/validation/warehousingValidation');
 
-exports.finishWarehausing = (req, res) => {
+exports.finishWarehausing = async (req, res) => {
     try {
         const { stockData, wareHousingData } = req.body
         
@@ -13,8 +13,6 @@ exports.finishWarehausing = (req, res) => {
             
             element.area = initialAreaUnit.area - changedAreaUnit.area
         });
-
-        console.log(goodsArea);
         
         const totalArea = wareHousingData.areasData
         .map(unit => unit.area)
@@ -25,40 +23,37 @@ exports.finishWarehausing = (req, res) => {
         // 2. Set the relation with warehouse by that id
         // 3. Set warehoused area by cargo
         
-        const ttnRequest = TTN.findOneAndUpdate(
-            {_id: wareHousingData.formData._id},
+        const ttnModel = await TTN.findOneAndUpdate(
+            {_id: wareHousingData.formData.id},
             {$set: {
                 status: 'warehoused',
-                warehouseID: stockData._id,
+                warehouseID: stockData.id,
                 warehouseAreas: goodsArea
             }},
             {useNewUrlParser: true}
-        )
+        );
 
         // Warehouse edit
         // 1. Update total free warehouse area
         // 2. Update warehouse areas state
     
-        const warehouseRequest = Warehouse.findOneAndUpdate(
-            {_id: stockData._id},
+        const warehouseModel = await Warehouse.findOneAndUpdate(
+            {_id: stockData.id},
             {$set: {
                 totalArea: totalArea,
                 areas: wareHousingData.areasData,
             }},
             {useNewUrlParser: true}
-        )
+        );
 
-        Promise
-        .all([ttnRequest, warehouseRequest])
-        .then(() => {
-            res.status(200).json();
-        })
+        await ttnModel.save();
+        await warehouseModel.save();
+
+        return res.status(200).json();
     }
     catch (e) {
         console.log(e)
     }
-
-    return res.status(200).json();
 }
 
 exports.validateWarehousing = async (req, res, next) => {
