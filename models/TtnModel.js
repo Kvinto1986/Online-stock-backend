@@ -28,7 +28,7 @@ const tthScheema = new Schema({
         required: true
     },
     registrar: {
-        type: String,
+        type: Object,
         required: true
     },
     driver: {
