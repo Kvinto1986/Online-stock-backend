@@ -6,7 +6,7 @@ const {createWarehouse, editWarehouse, getWarehouses, getWarehouse, deleteWareho
 
 router.post('', auth.AUTH([COMPANY_ADMIN]), createWarehouse);
 router.post('/:id', auth.AUTH([COMPANY_ADMIN, EMPLOYEE], [EMPLOYEE_MANAGER]), editWarehouse);
-router.get('', auth.AUTH([COMPANY_ADMIN]), getWarehouses);
+router.get('', auth.AUTH([COMPANY_ADMIN, EMPLOYEE],[EMPLOYEE_MANAGER]), getWarehouses);
 router.get('/:id', auth.AUTH([COMPANY_ADMIN, EMPLOYEE],[EMPLOYEE_MANAGER]), getWarehouse);
 router.delete('/:id', auth.AUTH([COMPANY_ADMIN]), deleteWarehouse);
 

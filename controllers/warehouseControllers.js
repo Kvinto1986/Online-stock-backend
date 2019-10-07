@@ -34,6 +34,7 @@ exports.editWarehouse = async (req, res) => {
 };
 
 exports.getWarehouses = async (req, res) => {
+    console.log(req.user)
     const dbWarehouse = await Warehouse.find({company: req.user.company});
     const warehousesList = dbWarehouse.map((elem) => {
         return changeWarehouseForResult(elem)
