@@ -12,7 +12,7 @@ exports.createCarrier = async (req, res) => {
 
     const newCarrier = new Carrier({...body});
     const model = await newCarrier.save();
-    const createdCarrier = changeCarrierForResult(model);
+    const createdCarrier = changeCarrierForResult(model,'unp');
     return res.status(200).json(createdCarrier);
 };
 

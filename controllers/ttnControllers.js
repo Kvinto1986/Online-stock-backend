@@ -13,7 +13,7 @@ exports.createTTN = async (req, res) => {
 
     const newTTN = new TTN({...body});
     const model = await newTTN.save();
-    const createdTTN = changeTTNForResult(model);
+    const createdTTN = changeTTNForResult(model,'number');
     return res.status(200).json(createdTTN);
 
 };
@@ -27,7 +27,7 @@ exports.getTTN = async (req, res) => {
         });
     }
 
-    const foundTTN = changeTTNForResult(dbTTN);
+    const foundTTN = changeTTNForResult(dbTTN,'number');
     return res.status(200).json(foundTTN);
 }
 
@@ -42,7 +42,7 @@ exports.editTTN = async (req, res) => {
     }
 
     const model = await dbTTN.save();
-    const editedTTN = changeTTNForResult(model);
+    const editedTTN = changeTTNForResult(model,'number');
     return res.status(200).json(editedTTN);
 };
 

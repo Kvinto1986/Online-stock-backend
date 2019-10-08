@@ -12,7 +12,7 @@ exports.createDriver = async (req, res) => {
 
     const newDriver = new Driver({...body});
     const model = await newDriver.save();
-    const createdDriver = changeDriverForResult(model);
+    const createdDriver = changeDriverForResult(model,'license');
     return res.status(200).json(createdDriver);
 }
 
