@@ -13,7 +13,7 @@ exports.createWarehouse = async (req, res) => {
 
     const newWarehouse = new Warehouse({...body});
     const model = await newWarehouse.save();
-    const createdWarehouse = changeWarehouseForResult(model);
+    const createdWarehouse = changeWarehouseForResult(model,'license');
     return res.status(200).json(createdWarehouse);
 
 };
@@ -29,7 +29,7 @@ exports.editWarehouse = async (req, res) => {
     }
 
     const model = await dbWarehouse.save();
-    const editedWarehouse = changeWarehouseForResult(model);
+    const editedWarehouse = changeWarehouseForResult(model,'license');
     return res.status(200).json(editedWarehouse);
 };
 
