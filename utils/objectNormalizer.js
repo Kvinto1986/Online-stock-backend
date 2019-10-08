@@ -1,5 +1,5 @@
-const changeObjectForResponse = (object) => {
-    const {_id: id, password, __v, ...elem} = object.toObject();
+const changeObjectForResponse = (object,param) => {
+    const {[param]: id, password, __v,_id, ...elem} = object.toObject();
     return {...elem, id}
 };
 

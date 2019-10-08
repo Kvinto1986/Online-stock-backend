@@ -20,7 +20,7 @@ exports.login = async (req, res) => {
         })
     }
 
-    const user=changeUserForResult(dbUser);
+    const user=changeUserForResult(dbUser,'_id');
 
     jwt.sign(user, 'secret', {expiresIn: 3600}, (err, token) => {
         if (err) {

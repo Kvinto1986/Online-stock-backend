@@ -37,7 +37,7 @@ exports.getWarehouses = async (req, res) => {
     console.log(req.user)
     const dbWarehouse = await Warehouse.find({company: req.user.company});
     const warehousesList = dbWarehouse.map((elem) => {
-        return changeWarehouseForResult(elem)
+        return changeWarehouseForResult(elem,'license')
     });
 
     return res.status(200).json(warehousesList);
@@ -51,7 +51,7 @@ exports.getWarehouse = async (req, res) => {
         });
     }
 
-    const foundWarehouse = changeWarehouseForResult(dbWarehouse);
+    const foundWarehouse = changeWarehouseForResult(dbWarehouse,'license');
     return res.status(200).json(foundWarehouse);
 };
 

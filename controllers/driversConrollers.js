@@ -24,6 +24,6 @@ exports.getDriver = async (req, res) => {
         });
     }
 
-    const foundDriver = changeDriverForResult(dbDriver);
+    const foundDriver = changeDriverForResult(dbDriver,'license');
     return res.status(200).json(foundDriver);
 }

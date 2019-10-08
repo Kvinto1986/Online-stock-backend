@@ -48,7 +48,7 @@ exports.getCarrier = async (req, res) => {
         });
     }
 
-    const foundCarrier = changeCarrierForResult(dbCarrier);
+    const foundCarrier = changeCarrierForResult(dbCarrier,'unp');
     return res.status(200).json(foundCarrier);
 };
 
