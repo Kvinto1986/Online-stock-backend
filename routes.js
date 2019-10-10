@@ -6,6 +6,7 @@ const companyAdmins = require('./routes/companyAdminRoutes');
 const companyAdminsStatistic = require('./routes/companyAdminStatisticRoute');
 const warehouses = require('./routes/warehouseRoute');
 const ttns = require('./routes/ttnRoutes');
+const ttnsOut = require('./routes/ttnOutRoute');
 const carriers = require('./routes/carrierRoute');
 const drivers = require('./routes/driverRoute');
 const senders = require('./routes/senderRoute');
@@ -21,6 +22,7 @@ app.use('/carriers', carriers);
 app.use('/ttns', ttns);
 app.use('/drivers', drivers);
 app.use('/senders', senders);
+app.use('/ttnsOut', ttnsOut);
 
 app.use('/managers', managerRoute);
 

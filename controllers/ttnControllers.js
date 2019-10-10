@@ -29,7 +29,7 @@ exports.getTTN = async (req, res) => {
 
     const foundTTN = changeTTNForResult(dbTTN,'number');
     return res.status(200).json(foundTTN);
-}
+};
 
 exports.editTTN = async (req, res) => {
     const {body} = req;
@@ -45,4 +45,3 @@ exports.editTTN = async (req, res) => {
     const editedTTN = changeTTNForResult(model,'number');
     return res.status(200).json(editedTTN);
 };
-
