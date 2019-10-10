@@ -58,7 +58,7 @@ exports.getWarehouse = async (req, res) => {
 exports.deleteWarehouse = async (req, res) => {
     const dbWarehouse = await Warehouse.findById(req.params.id);
     const deletedWarehouse = await dbWarehouse.remove();
-    const model = changeWarehouseForResult(deletedWarehouse);
+    const model = changeWarehouseForResult(deletedWarehouse,'license');
     return res.status(200).json(model);
 };
 
