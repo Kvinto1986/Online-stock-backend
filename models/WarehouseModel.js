@@ -33,6 +33,10 @@ const WarehouseSchema = new Schema({
     },
     initialAreasState: {
         type: Array,
+    },
+    freeArea:{
+        type: Number,
+        required: true
     }
 });
 
