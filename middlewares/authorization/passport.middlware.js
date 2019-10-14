@@ -3,7 +3,6 @@ const {EMPLOYEE} = require('../../constants/roles');
 
 module.exports.AUTH = (availableRoles, employeePosition) => (req, res, next) => {
     passport.authenticate('jwt', {session: false}, function (err, user) {
-        console.log(user)
         if (err) {
             return next(err)
         }
