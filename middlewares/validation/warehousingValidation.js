@@ -8,8 +8,8 @@ exports.validateWarehousingData = (data) => {
     const isInvalidCargoUnitArea = 
     wareHousingData.areasData.some((warehouseArea, i) => {
         const isInvalid = 
-        (warehouseArea.area < 0) || 
-        (warehouseArea.area > stockData.areas[i])
+        (warehouseArea.freeArea < 0) || 
+        (warehouseArea.freeArea > stockData.areas[i].area)
         ? true
         : false
 
