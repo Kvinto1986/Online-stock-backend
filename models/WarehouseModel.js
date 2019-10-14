@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const WarehouseSchema = new Schema({
-    adminId: {
-        type: String,
-        required: true
-    },
     name: {
         type: String,
         required: true
@@ -37,6 +33,10 @@ const WarehouseSchema = new Schema({
     },
     initialAreasState: {
         type: Array,
+    },
+    freeArea:{
+        type: Number,
+        required: true
     }
 });
 
