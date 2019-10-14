@@ -20,8 +20,7 @@ const tthOutScheema = new Schema({
         required: true
     },
     registrar: {
-        type: Object,
-        required: true
+        type: Object
     },
     driver: {
         type: Object,
