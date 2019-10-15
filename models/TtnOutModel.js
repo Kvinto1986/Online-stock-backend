@@ -37,14 +37,6 @@ const tthOutScheema = new Schema({
     description: {
         type: String,
     },
-    warehouseLicense: {
-        type: String,
-        required: true
-    },
-    warehouseCompany: {
-        type: String,
-        required: true
-    },
 });
 
 const tthOut = mongoose.model('ttnOut', tthOutScheema);
