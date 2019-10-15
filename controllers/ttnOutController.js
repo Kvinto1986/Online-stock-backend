@@ -13,9 +13,17 @@ exports.createTtn = async (req, res) => {
         });
     }
 
-    const productTTN=body.products[0].ttnNumber;
+    const productTTN = body.products[0].ttnNumber;
+
     const dbTTN = await TTN.findOne({number: productTTN});
-    const warehouseID=dbTTN.warehouseID;
+
+    if (!dbTTN) {
+        return res.status(400).json({
+            warehouse: `Warehouse not found`
+        });
+    }
+    const warehouseID = dbTTN.warehouseID;
+
     const dbWarehouse = await Warehouse.findOne({license: warehouseID});
     if (!dbWarehouse) {
         return res.status(400).json({
@@ -38,18 +46,25 @@ exports.createTtn = async (req, res) => {
         return JSON.stringify({ttn: elem.ttnNumber, name: elem.name})
     });
 
+    let bool = true;
+    let warehouseError='';
+
     ttnProductsArray.forEach(elem => {
         if (!warehouseProductsArray.includes(elem)) {
-            return res.status(400).json({
-                error: `No product data found in warehouse, error in ttn №${JSON.parse(elem).ttn}, product: ${JSON.parse(elem).name}`
-            });
+            bool = false;
+            warehouseError= `No product data found in warehouse, error in ttn №${JSON.parse(elem).ttn}, product: ${JSON.parse(elem).name}`
         }
+    });
+
+    if(!bool)
+    return res.status(400).json({
+        error: warehouseError
     });
 
     ttnProducts.forEach(ttnProduct => {
         warehouseAreas.map(area => {
-            if (area.products.length>0) {
-                area.products.map(product => {
+            if (area.products.length > 0) {
+                area.products.map((product,index) => {
                     if (ttnProduct.ttnNumber === product.ttnNumber && ttnProduct.name === product.name) {
                         if (product.amount < ttnProduct.amount) {
                             return res.status(400).json({
@@ -62,6 +77,7 @@ exports.createTtn = async (req, res) => {
                         area.freeArea += ttnProductArea;
                         if (product.amount === 0) {
                             product.size = 0;
+                            area.products.splice(index,1)
                         } else product.size -= ttnProductArea;
 
                     }
@@ -70,10 +86,10 @@ exports.createTtn = async (req, res) => {
         })
     });
 
-    const newTTNOut = new TTNOut({...body});
-    const TTNOutModel = await newTTNOut.save();
-    const dbWarehouseModel = await Warehouse.findOneAndUpdate({license: warehouseID}, dbWarehouse, {new: true});
-    const WarehouseModel = await dbWarehouseModel.save();
-    const createdTTN = changeTtnOutForResult(TTNOutModel, 'number');
-    return res.status(200).json(createdTTN);
+        const newTTNOut = new TTNOut({...body});
+        const TTNOutModel = await newTTNOut.save();
+        const dbWarehouseModel = await Warehouse.findOneAndUpdate({license: warehouseID}, dbWarehouse, {new: true});
+        const WarehouseModel = await dbWarehouseModel.save();
+        const createdTTN = changeTtnOutForResult(TTNOutModel, 'number');
+        return res.status(200).json(createdTTN);
 };
