@@ -19,7 +19,7 @@ exports.createTTN = async (req, res) => {
 };
 
 exports.getTTN = async (req, res) => {
-    const dbTTN = await TTN.findOne({number: req.params.id});
+    const dbTTN = await TTN.findOne({number: req.params.id, warehouseCompany:req.user.company});
 
     if (!dbTTN) {
         return res.status(400).json({
