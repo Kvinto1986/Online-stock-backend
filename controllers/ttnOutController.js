@@ -65,9 +65,9 @@ exports.createTtn = async (req, res) => {
     const productsArray = [];
     ttnProducts.forEach(ttnProduct => {
         const currentProductArray = [];
-        warehouseAreas.map((area, areaIndex) => {
+        warehouseAreas.forEach((area, areaIndex) => {
             if (area.products.length > 0) {
-                area.products.map((product, productIndex) => {
+                area.products.forEach((product, productIndex) => {
                     if (ttnProduct.ttnNumber === product.ttnNumber && ttnProduct.name === product.name) {
                         const productObject = {
                             name: ttnProduct.name,
@@ -113,7 +113,7 @@ exports.createTtn = async (req, res) => {
 
     ttnProducts.forEach((ttnProduct, index) => {
         let productBalance = ttnProduct.amount;
-        sortedProductsArray[index].map(product => {
+        sortedProductsArray[index].forEach(product => {
             if (product.amount > productBalance) {
                 const coefficient = product.size / product.amount;
                 const ttnProductArea = Math.round(productBalance * coefficient);
