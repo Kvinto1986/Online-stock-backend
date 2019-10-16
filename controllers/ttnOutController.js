@@ -46,50 +46,111 @@ exports.createTtn = async (req, res) => {
         return JSON.stringify({ttn: elem.ttnNumber, name: elem.name})
     });
 
-    let bool = true;
-    let warehouseError='';
+    let boolFind = true;
+    let warehouseError = '';
 
     ttnProductsArray.forEach(elem => {
         if (!warehouseProductsArray.includes(elem)) {
             bool = false;
-            warehouseError= `No product data found in warehouse, error in ttn №${JSON.parse(elem).ttn}, product: ${JSON.parse(elem).name}`
+            warehouseError = `No product data found in warehouse, error in ttn №${JSON.parse(elem).ttn}, product: ${JSON.parse(elem).name}`
         }
     });
 
-    if(!bool)
-    return res.status(400).json({
-        error: warehouseError
-    });
+    if (!boolFind) {
+        return res.status(400).json({
+            error: warehouseError
+        })
+    }
 
+    const productsArray = [];
     ttnProducts.forEach(ttnProduct => {
-        warehouseAreas.map(area => {
+        const currentProductArray = [];
+        warehouseAreas.map((area, areaIndex) => {
             if (area.products.length > 0) {
-                area.products.map((product,index) => {
+                area.products.map((product, productIndex) => {
                     if (ttnProduct.ttnNumber === product.ttnNumber && ttnProduct.name === product.name) {
-                        if (product.amount < ttnProduct.amount) {
-                            return res.status(400).json({
-                                error: `The warehouse contains less than declared products TTN №${ttnProduct.ttnNumber}, product: ${ttnProduct.name}`
-                            });
-                        }
-                        const coefficient = product.size / product.amount;
-                        const ttnProductArea = Math.round(ttnProduct.amount * coefficient);
-                        product.amount -= ttnProduct.amount;
-                        area.freeArea += ttnProductArea;
-                        if (product.amount === 0) {
-                            product.size = 0;
-                            area.products.splice(index,1)
-                        } else product.size -= ttnProductArea;
-
+                        const productObject = {
+                            name: ttnProduct.name,
+                            ttnNumber: ttnProduct.ttnNumber,
+                            areaIndex: areaIndex,
+                            productIndex: productIndex,
+                            amount: product.amount,
+                            size: product.size
+                        };
+                        currentProductArray.push(productObject)
                     }
                 })
+            }
+        });
+        productsArray.push(currentProductArray)
+    });
+
+    const productsArraySort = productsArray.map(elem => {
+        return elem.sort(function (a, b) {
+            return a.amount - b.amount
+        });
+    });
+
+    const totalProductsOnWarehouse = productsArray.map(elem => {
+        return elem.reduce((sum, current) => sum + current.amount, 0);
+    });
+
+    let boolAmount = true;
+    let amountError = '';
+
+    ttnProducts.forEach((ttnProduct, index) => {
+        if (ttnProduct.amount > totalProductsOnWarehouse[index]) {
+            boolAmount = false
+            amountError = `The warehouse contains less than declared products, or not correct TTN number or product name in TTN №${ttnProduct.ttnNumber}, product: ${ttnProduct.name}`
+        }
+    });
+
+    if (!boolAmount) {
+        return res.status(400).json({
+            error: amountError
+        })
+    }
+
+    ttnProducts.forEach((ttnProduct, index) => {
+        let productBalance = ttnProduct.amount;
+        productsArraySort[index].map(product => {
+            if (product.amount > productBalance) {
+                const coefficient = product.size / product.amount;
+                const ttnProductArea = Math.round(productBalance * coefficient);
+                product.amount -= productBalance;
+                product.size -= ttnProductArea;
+                warehouseAreas[product.areaIndex].freeArea += ttnProductArea;
+                productBalance = 0
+            }
+            if (product.amount <= productBalance) {
+                warehouseAreas[product.areaIndex].freeArea += product.size;
+                productBalance -= product.amount;
+                product.amount = 0;
+                product.size = 0;
+            }
+
+        })
+    });
+
+    productsArraySort.forEach(products => {
+        products.forEach(elem => {
+            warehouseAreas[elem.areaIndex].products[elem.productIndex].amount = elem.amount;
+            warehouseAreas[elem.areaIndex].products[elem.productIndex].size = elem.size;
+        })
+    });
+
+    warehouseAreas.forEach(area => {
+        return area.products.forEach((elem, index) => {
+            if (elem.amount === 0) {
+                area.products.splice(index, 1)
             }
         })
     });
 
-        const newTTNOut = new TTNOut({...body});
-        const TTNOutModel = await newTTNOut.save();
-        const dbWarehouseModel = await Warehouse.findOneAndUpdate({license: warehouseID}, dbWarehouse, {new: true});
-        const WarehouseModel = await dbWarehouseModel.save();
-        const createdTTN = changeTtnOutForResult(TTNOutModel, 'number');
-        return res.status(200).json(createdTTN);
+    const newTTNOut = new TTNOut({...body});
+    const TTNOutModel = await newTTNOut.save();
+    const dbWarehouseModel = await Warehouse.findOneAndUpdate({license: warehouseID}, dbWarehouse, {new: true});
+    await dbWarehouseModel.save();
+    const createdTTN = changeTtnOutForResult(TTNOutModel, 'number');
+    return res.status(200).json(createdTTN);
 };
