@@ -85,7 +85,7 @@ exports.createTtn = async (req, res) => {
         productsArray.push(currentProductArray)
     });
 
-    const productsArraySort = productsArray.map(elem => {
+    const sortedProductsArray = productsArray.map(elem => {
         return elem.sort(function (a, b) {
             return a.amount - b.amount
         });
@@ -100,7 +100,7 @@ exports.createTtn = async (req, res) => {
 
     ttnProducts.forEach((ttnProduct, index) => {
         if (ttnProduct.amount > totalProductsOnWarehouse[index]) {
-            boolAmount = false
+            boolAmount = false;
             amountError = `The warehouse contains less than declared products, or not correct TTN number or product name in TTN №${ttnProduct.ttnNumber}, product: ${ttnProduct.name}`
         }
     });
@@ -113,19 +113,19 @@ exports.createTtn = async (req, res) => {
 
     ttnProducts.forEach((ttnProduct, index) => {
         let productBalance = ttnProduct.amount;
-        productsArraySort[index].map(product => {
+        sortedProductsArray[index].map(product => {
             if (product.amount > productBalance) {
                 const coefficient = product.size / product.amount;
                 const ttnProductArea = Math.round(productBalance * coefficient);
                 product.amount -= productBalance;
                 product.size -= ttnProductArea;
                 warehouseAreas[product.areaIndex].freeArea += ttnProductArea;
-                dbWarehouse.freeArea+=ttnProductArea;
+                dbWarehouse.freeArea += ttnProductArea;
                 productBalance = 0
             }
             if (product.amount <= productBalance) {
                 warehouseAreas[product.areaIndex].freeArea += product.size;
-                dbWarehouse.freeArea+=product.size
+                dbWarehouse.freeArea += product.size;
                 productBalance -= product.amount;
                 product.amount = 0;
                 product.size = 0;
@@ -134,7 +134,7 @@ exports.createTtn = async (req, res) => {
         })
     });
 
-    productsArraySort.forEach(products => {
+    sortedProductsArray.forEach(products => {
         products.forEach(elem => {
             warehouseAreas[elem.areaIndex].products[elem.productIndex].amount = elem.amount;
             warehouseAreas[elem.areaIndex].products[elem.productIndex].size = elem.size;
