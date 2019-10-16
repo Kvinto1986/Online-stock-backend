@@ -120,10 +120,12 @@ exports.createTtn = async (req, res) => {
                 product.amount -= productBalance;
                 product.size -= ttnProductArea;
                 warehouseAreas[product.areaIndex].freeArea += ttnProductArea;
+                dbWarehouse.freeArea+=ttnProductArea;
                 productBalance = 0
             }
             if (product.amount <= productBalance) {
                 warehouseAreas[product.areaIndex].freeArea += product.size;
+                dbWarehouse.freeArea+=product.size
                 productBalance -= product.amount;
                 product.amount = 0;
                 product.size = 0;
