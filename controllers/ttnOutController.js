@@ -51,7 +51,7 @@ exports.createTtn = async (req, res) => {
 
     ttnProductsArray.forEach(elem => {
         if (!warehouseProductsArray.includes(elem)) {
-            bool = false;
+            boolFind = false;
             warehouseError = `No product data found in warehouse, error in ttn №${JSON.parse(elem).ttn}, product: ${JSON.parse(elem).name}`
         }
     });
