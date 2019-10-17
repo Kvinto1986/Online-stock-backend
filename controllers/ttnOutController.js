@@ -101,7 +101,7 @@ exports.createTtn = async (req, res) => {
     ttnProducts.forEach((ttnProduct, index) => {
         if (ttnProduct.amount > totalProductsOnWarehouse[index]) {
             boolAmount = false;
-            amountError = `The warehouse contains less than declared products, or not correct TTN number or product name in TTN №${ttnProduct.ttnNumber}, product: ${ttnProduct.name}`
+            amountError = `The warehouse contains less than declared products name in TTN №${ttnProduct.ttnNumber}, product: ${ttnProduct.name}`
         }
     });
 
