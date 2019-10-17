@@ -12,8 +12,7 @@ const tthOutScheema = new Schema({
         default: Date.now
     },
     owner: {
-        type: String,
-        required: true
+        type: String
     },
     carrier: {
         type: Object,
