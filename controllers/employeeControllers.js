@@ -45,7 +45,7 @@ exports.getEmployees = async (req, res) => {
     const empaloyeeCompany = req.user.company;
     const dbUsers = await Employee.find({company: empaloyeeCompany});
     const employeesList = dbUsers.map((employee) => {
-        return changeEmployeeForResult(employee)
+        return changeEmployeeForResult(employee,'_id')
     });
     return res.status(200).json(employeesList);
 };

@@ -19,7 +19,7 @@ exports.createTtn = async (req, res) => {
 
     if (!dbTTN) {
         return res.status(400).json({
-            warehouse: `Warehouse not found`
+            error: `Warehouse not found`
         });
     }
     const warehouseID = dbTTN.warehouseID;
@@ -27,7 +27,7 @@ exports.createTtn = async (req, res) => {
     const dbWarehouse = await Warehouse.findOne({license: warehouseID});
     if (!dbWarehouse) {
         return res.status(400).json({
-            warehouse: 'Warehouse not found'
+            error: 'Warehouse not found'
         });
     }
 
