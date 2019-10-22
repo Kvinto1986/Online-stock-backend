@@ -14,7 +14,7 @@ exports.createDriver = async (req, res) => {
     const model = await newDriver.save();
     const createdDriver = changeDriverForResult(model,'license');
     return res.status(200).json(createdDriver);
-}
+};
 
 exports.getDriver = async (req, res) => {
     const dbDriver = await Driver.findOne({license: req.params.id});
@@ -26,4 +26,4 @@ exports.getDriver = async (req, res) => {
 
     const foundDriver = changeDriverForResult(dbDriver,'license');
     return res.status(200).json(foundDriver);
-}
+};
