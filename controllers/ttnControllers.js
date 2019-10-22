@@ -19,11 +19,11 @@ exports.createTTN = async (req, res) => {
 };
 
 exports.getTTN = async (req, res) => {
-    const dbTTN = await TTN.findOne({number: req.params.id});
+    const dbTTN = await TTN.findOne({number: req.params.id, warehouseCompany:req.user.company});
 
     if (!dbTTN) {
         return res.status(400).json({
-            TTN: 'TTN not found'
+            number: 'TTN not found'
         });
     }
 
@@ -33,7 +33,7 @@ exports.getTTN = async (req, res) => {
 
 exports.editTTN = async (req, res) => {
     const {body} = req;
-    const dbTTN = await TTN.findOneAndUpdate({_id: req.params.id}, body, {new: true});
+    const dbTTN = await TTN.findOneAndUpdate({number : req.params.id}, body, {new: true});
 
     if (!dbTTN) {
         return res.status(400).json({

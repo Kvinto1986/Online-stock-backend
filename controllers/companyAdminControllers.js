@@ -2,6 +2,7 @@ const CompanyAdmin = require('../models/CompanyAdminModel');
 const generator = require('generate-password');
 const changeCompanyAdminForResult = require('../utils/objectNormalizer');
 const mailer = require('../utils/mailSender');
+const bcrypt = require('bcryptjs');
 
 exports.createCompanyAdmin = async (req, res) => {
     const {body} = req;
@@ -28,6 +29,8 @@ exports.createCompanyAdmin = async (req, res) => {
     mailer(body.email, randomPassword);
 
     const newCompanyAdmin = new CompanyAdmin({...body, password: randomPassword});
+    const salt = await bcrypt.genSalt(10);
+    newCompanyAdmin.password = await bcrypt.hash(newCompanyAdmin.password, salt);
     const model = await newCompanyAdmin.save();
     const createdCompanyAdmin = changeCompanyAdminForResult(model);
     return res.status(200).json(createdCompanyAdmin);
@@ -41,6 +44,11 @@ exports.editCompanyAdmin = async (req, res) => {
         return res.status(400).json({
             user: 'User not found'
         });
+    }
+
+    if(body.password){
+        const salt = await bcrypt.genSalt(10);
+        dbCompanyAdmin.password = await bcrypt.hash(body.password, salt);
     }
 
     const model = await dbCompanyAdmin.save();

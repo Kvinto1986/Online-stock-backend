@@ -12,16 +12,14 @@ const tthOutScheema = new Schema({
         default: Date.now
     },
     owner: {
-        type: String,
-        required: true
+        type: String
     },
     carrier: {
         type: Object,
         required: true
     },
     registrar: {
-        type: Object,
-        required: true
+        type: Object
     },
     driver: {
         type: Object,
@@ -37,14 +35,6 @@ const tthOutScheema = new Schema({
     },
     description: {
         type: String,
-    },
-    warehouseLicense: {
-        type: String,
-        required: true
-    },
-    warehouseCompany: {
-        type: String,
-        required: true
     },
 });
 

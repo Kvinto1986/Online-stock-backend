@@ -3,14 +3,16 @@ const Warehouse = require('../models/WarehouseModel');
 const { validateWarehousingData } = require('../middlewares/validation/warehousingValidation');
 
 exports.finishWarehausing = async (req, res) => {
+
     // try {
         const { stockData, wareHousingData } = req.body
         
         const goodsArea = [...stockData.areas]
         goodsArea.forEach((element, i) => {
             const initialAreaUnit = stockData.areas[i]
+            console.log(wareHousingData.areasData)
             const changedAreaUnit = wareHousingData.areasData.find(area => area.index === (i + 1))
-            
+
             element.area = initialAreaUnit.area - changedAreaUnit.area
         });
         
@@ -58,14 +60,3 @@ exports.finishWarehausing = async (req, res) => {
     //     console.log(e)
     // }
 }
-
-exports.validateWarehousing = async (req, res, next) => {
-    const { errors, isValid } = validateWarehousingData(req.body);
-
-    if(!isValid) {   
-        return res.status(400).json(errors);
-    }
-    else {
-        next();
-    }
-};
