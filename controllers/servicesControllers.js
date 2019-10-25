@@ -1,8 +1,6 @@
 const Service = require('../models/ServiceModel');
 const jwt = require('jsonwebtoken');
 const changeServiceForResult = require('../utils/objectNormalizer');
-const TTN = require('../models/TtnModel');
-const Warehouse = require('../models/WarehouseModel');
 
 exports.createService = async (req, res) => {
     const {body} = req;
@@ -20,31 +18,20 @@ exports.createService = async (req, res) => {
     return res.status(200).json(createdService);
 };
 
-exports.getService = async (req, res) => {
-    const ttnNumber=req.params.id;
-
-    const dbTTN = await TTN.findOne({number: ttnNumber,status:"warehoused"});
-    if (!dbTTN) {
-        return res.status(400).json({
-            number: 'TTN not found'
-        });
-    }
-
-    const dbWarehouse = await Warehouse.findOne({license:dbTTN.warehouseID});
-    if (!dbWarehouse) {
-        return res.status(400).json({
-            warehouse: 'Warehouse not found'
-        });
-    }
-
-    const cargoArray=[];
-    dbWarehouse.areas.forEach(area=>{
-        area.products.forEach(products=>{
-            if(products.ttnNumber===ttnNumber){
-                cargoArray.push({name:products.name,amount:products.amount,packaging:products.dimension})
-            }
-        })
+exports.getServices = async (req, res) => {
+    const dbServices = await Service.find({});
+    const servicesList = dbServices.map(element => {
+        const {name: id, token, __v, _id, ...elem} = element.toObject();
+        return {...elem, id}
     });
 
-    return res.status(200).json(cargoArray);
+
+    return res.status(200).json(servicesList);
+};
+
+exports.deleteService = async (req, res) => {
+    const dbService = await Service.findOne({name: req.params.id});
+    const deletedService = await dbService.remove();
+    const {name: id, token, __v, _id, ...elem} = deletedService.toObject();
+    return res.status(200).json({...elem, id});
 };

@@ -12,6 +12,7 @@ const drivers = require('./routes/driverRoute');
 const senders = require('./routes/senderRoute');
 const managerRoute = require('./routes/managerRoute');
 const servicesRoute = require('./routes/servicesRoute');
+const ttnInfoRoute = require('./routes/ttnInfoRoute');
 
 app.use('/login', login);
 app.use('/employees', employees);
@@ -25,5 +26,6 @@ app.use('/senders', senders);
 app.use('/ttnsOut', ttnsOut);
 app.use('/managers', managerRoute);
 app.use('/services', servicesRoute);
+app.use('/ttnsInfo', ttnInfoRoute);
 
 module.exports = app;
