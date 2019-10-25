@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const {createCarrier, editCarrier, getCarriers, getCarrier, deleteCarrier} = require('../controllers/servicesControllers');
+const auth = require('../middlewares/authorization/passport.middlware');
+const serviceAuth = require('../middlewares/authorization/servicePassport.middlware');
+const {MAIN_ADMIN} = require('../constants/roles');
+const {createService, getService} = require('../controllers/servicesControllers');
 
-router.post('', createCarrier);
-//router.post('/:id', editCarrier);
-//router.get('', getCarriers);
-//router.get('/:id', getCarrier);
-//router.delete('/:id', deleteCarrier);
+router.post('', auth.AUTH([MAIN_ADMIN]), createService);
+router.get('/:id',serviceAuth.AUTH(), getService);
 
 module.exports = router;
