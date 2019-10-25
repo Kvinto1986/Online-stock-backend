@@ -34,8 +34,16 @@ const WarehouseSchema = new Schema({
     initialAreasState: {
         type: Array,
     },
-    freeArea:{
+    freeArea: {
         type: Number,
+        required: true
+    },
+    GPS: {
+        type: Object,
+        required: true
+    },
+    address:{
+        type:'String',
         required: true
     }
 });
