@@ -27,7 +27,7 @@ exports.editCarrier = async (req, res) => {
     }
 
     const model = await dbCarrier.save();
-    const editedCarrier = changeCarrierForResult(model);
+    const editedCarrier = changeCarrierForResult(model,'unp');
     return res.status(200).json(editedCarrier);
 };
 
@@ -55,7 +55,7 @@ exports.getCarrier = async (req, res) => {
 exports.deleteCarrier = async (req, res) => {
     const dbCarrier = await Carrier.findById(req.params.id);
     const deletedCarrier = await dbCarrier.remove();
-    const model = changeCarrierForResult(deletedCarrier);
+    const model = changeCarrierForResult(deletedCarrier,'unp');
     return res.status(200).json(model);
 };
 
