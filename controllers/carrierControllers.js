@@ -34,7 +34,7 @@ exports.editCarrier = async (req, res) => {
 exports.getCarriers = async (req, res) => {
     const dbCarriers = await Carrier.find({});
     const carriersList = dbCarriers.map((elem) => {
-        return changeCarrierForResult(elem)
+        return changeCarrierForResult(elem,'unp')
     });
 
     return res.status(200).json(carriersList);
