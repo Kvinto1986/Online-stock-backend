@@ -23,7 +23,7 @@ exports.getTtnInfo = async (req, res) => {
         area.products.forEach(products => {
             if (products.ttnNumber === ttnNumber) {
                 cargoArray.push({
-                    number: products.number,
+                    number: products.id,
                     name: products.name,
                     amount: products.amount,
                     packaging: products.dimension
