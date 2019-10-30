@@ -59,6 +59,10 @@ const tthScheema = new Schema({
         type: String,
         required: true
     },
+    service:{
+        type: String,
+        required: true
+    }
 });
 
 const tth = mongoose.model('ttn', tthScheema);
