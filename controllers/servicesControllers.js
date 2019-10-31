@@ -1,6 +1,7 @@
 const Service = require('../models/ServiceModel');
 const jwt = require('jsonwebtoken');
 const changeServiceForResult = require('../utils/objectNormalizer');
+const {MAIN_ADMIN, EMPLOYEE} = require('../constants/roles');
 
 exports.createService = async (req, res) => {
     const {body} = req;
@@ -20,9 +21,11 @@ exports.createService = async (req, res) => {
 
 exports.getServices = async (req, res) => {
     const dbServices = await Service.find({});
+    console.log(req.user.role)
     const servicesList = dbServices.map(element => {
-        const {name: id, token, __v, _id, ...elem} = element.toObject();
-        return {...elem, id}
+        if (req.user.role === MAIN_ADMIN) {
+            return {id: element.name, token: element.token}
+        } else return {id: element.name}
     });
 
 
