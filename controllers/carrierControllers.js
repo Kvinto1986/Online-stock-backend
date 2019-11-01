@@ -17,10 +17,9 @@ exports.createCarrier = async (req, res) => {
 };
 
 exports.editCarrier = async (req, res) => {
-    console.log(req.body)
     const {body} = req;
-//    changeObjectForResponse
-    const dbCarrier = await Carrier.findOneAndUpdate({unp: body.id}, body, {new: true});
+    console.log(body)
+    const dbCarrier = await Carrier.findOneAndUpdate({unp: req.params.id}, body, {new: true});
 
     if (!dbCarrier) {
         return res.status(400).json({
