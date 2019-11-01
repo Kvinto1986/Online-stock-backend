@@ -17,8 +17,10 @@ exports.createCarrier = async (req, res) => {
 };
 
 exports.editCarrier = async (req, res) => {
+    console.log(req.body)
     const {body} = req;
-    const dbCarrier = await Carrier.findOneAndUpdate({_id: req.params.id}, body, {new: true});
+//    changeObjectForResponse
+    const dbCarrier = await Carrier.findOneAndUpdate({unp: body.id}, body, {new: true});
 
     if (!dbCarrier) {
         return res.status(400).json({
@@ -53,7 +55,7 @@ exports.getCarrier = async (req, res) => {
 };
 
 exports.deleteCarrier = async (req, res) => {
-    const dbCarrier = await Carrier.findById(req.params.id);
+    const dbCarrier = await Carrier.findOne({unp: req.params.id});
     const deletedCarrier = await dbCarrier.remove();
     const model = changeCarrierForResult(deletedCarrier,'unp');
     return res.status(200).json(model);
