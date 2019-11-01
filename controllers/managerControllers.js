@@ -10,7 +10,6 @@ exports.finishWarehausing = async (req, res) => {
         const goodsArea = [...stockData.areas]
         goodsArea.forEach((element, i) => {
             const initialAreaUnit = stockData.areas[i]
-            console.log(wareHousingData.areasData)
             const changedAreaUnit = wareHousingData.areasData.find(area => area.index === (i + 1))
 
             element.area = initialAreaUnit.area - changedAreaUnit.area
@@ -20,9 +19,6 @@ exports.finishWarehausing = async (req, res) => {
         .map(unit => unit.freeArea)
         .reduce((a, b) => a + b)
 
-        console.log(totalArea);
-        console.log(goodsArea);
-    
         // TTN edit
         // 1. Update TTN status
         // 2. Set the relation with warehouse by that id
