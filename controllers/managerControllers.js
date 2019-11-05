@@ -3,8 +3,7 @@ const Warehouse = require('../models/WarehouseModel');
 const { validateWarehousingData } = require('../middlewares/validation/warehousingValidation');
 
 exports.finishWarehausing = async (req, res) => {
-
-    // try {
+    try {
         const { stockData, wareHousingData } = req.body
         
         const goodsArea = [...stockData.areas]
@@ -18,7 +17,7 @@ exports.finishWarehausing = async (req, res) => {
         const totalArea = wareHousingData.areasData
         .map(unit => unit.freeArea)
         .reduce((a, b) => a + b)
-
+        
         // TTN edit
         // 1. Update TTN status
         // 2. Set the relation with warehouse by that id
@@ -51,8 +50,8 @@ exports.finishWarehausing = async (req, res) => {
         await warehouseModel.save();
 
         return res.status(200).json();
-    // }
-    // catch (e) {
-    //     console.log(e)
-    // }
+    }
+    catch (e) {
+        console.log(e)
+    }
 }
