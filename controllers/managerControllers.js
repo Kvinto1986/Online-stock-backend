@@ -17,7 +17,7 @@ exports.finishWarehausing = async (req, res) => {
         const totalArea = wareHousingData.areasData
         .map(unit => unit.freeArea)
         .reduce((a, b) => a + b)
-    
+        
         // TTN edit
         // 1. Update TTN status
         // 2. Set the relation with warehouse by that id

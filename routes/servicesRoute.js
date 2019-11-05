@@ -5,7 +5,7 @@ const {MAIN_ADMIN, EMPLOYEE, EMPLOYEE_MANAGER, EMPLOYEE_OPERATOR} = require('../
 const {createService, getServices, deleteService} = require('../controllers/servicesControllers');
 
 router.post('', auth.AUTH([MAIN_ADMIN]), createService);
-router.get('', auth.AUTH([EMPLOYEE], [EMPLOYEE_MANAGER, EMPLOYEE_OPERATOR]), getServices);
+router.get('', auth.AUTH([EMPLOYEE, MAIN_ADMIN], [EMPLOYEE_MANAGER, EMPLOYEE_OPERATOR]), getServices);
 router.delete('/:id', auth.AUTH([MAIN_ADMIN]), deleteService);
 
 module.exports = router;

@@ -43,8 +43,8 @@ const tthScheema = new Schema({
         type: Array,
         required: true
     },
-    reports: {
-        type: Array,
+    report: {
+        type: Object,
     },
     description: {
         type: String,

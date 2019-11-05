@@ -45,3 +45,10 @@ exports.editTTN = async (req, res) => {
     const editedTTN = changeTTNForResult(model,'number');
     return res.status(200).json(editedTTN);
 };
+
+exports.deleteTTN = async (req, res) => {
+    const dbTTN = await TTN.findOne({number:req.params.id});
+    const deletedTTN = await dbTTN.remove();
+    const model = changeTTNForResult(deletedTTN,'unp');
+    return res.status(200).json(model);
+};
