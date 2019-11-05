@@ -3,14 +3,12 @@ const Warehouse = require('../models/WarehouseModel');
 const { validateWarehousingData } = require('../middlewares/validation/warehousingValidation');
 
 exports.finishWarehausing = async (req, res) => {
-
-    // try {
+    try {
         const { stockData, wareHousingData } = req.body
         
         const goodsArea = [...stockData.areas]
         goodsArea.forEach((element, i) => {
             const initialAreaUnit = stockData.areas[i]
-            console.log(wareHousingData.areasData)
             const changedAreaUnit = wareHousingData.areasData.find(area => area.index === (i + 1))
 
             element.area = initialAreaUnit.area - changedAreaUnit.area
@@ -19,10 +17,7 @@ exports.finishWarehausing = async (req, res) => {
         const totalArea = wareHousingData.areasData
         .map(unit => unit.freeArea)
         .reduce((a, b) => a + b)
-
-        console.log(totalArea);
-        console.log(goodsArea);
-    
+        
         // TTN edit
         // 1. Update TTN status
         // 2. Set the relation with warehouse by that id
@@ -55,8 +50,8 @@ exports.finishWarehausing = async (req, res) => {
         await warehouseModel.save();
 
         return res.status(200).json();
-    // }
-    // catch (e) {
-    //     console.log(e)
-    // }
+    }
+    catch (e) {
+        console.log(e)
+    }
 }

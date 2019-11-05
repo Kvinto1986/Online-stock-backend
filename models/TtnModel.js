@@ -43,8 +43,8 @@ const tthScheema = new Schema({
         type: Array,
         required: true
     },
-    reports: {
-        type: Array,
+    report: {
+        type: Object,
     },
     description: {
         type: String,
@@ -59,6 +59,10 @@ const tthScheema = new Schema({
         type: String,
         required: true
     },
+    service:{
+        type: String,
+        required: true
+    }
 });
 
 const tth = mongoose.model('ttn', tthScheema);
