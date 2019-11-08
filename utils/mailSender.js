@@ -1,7 +1,6 @@
 const nodemailer = require('nodemailer');
 
-
-function mailer(email, password) {
+function mailer(name, email, value, MESSAGE) {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -13,12 +12,8 @@ function mailer(email, password) {
     const mailOptions = {
         from: 'managerJohnSnow@gmail.com',
         to: email,
-        subject: 'Congratulations!',
-        text: `Congratulations! 
-        Now you have an account in the Online Warehouse system.
-        Login: ${email}
-        Temporary password: ${password}
-        Do not show anyone your temporary password, and change it in your account at your earliest convenience!`
+        subject: 'Notification from "Warehouse-online"',
+        html: MESSAGE(name, value)
     };
 
     transporter.sendMail(mailOptions, function (error, info) {

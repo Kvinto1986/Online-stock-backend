@@ -6,10 +6,13 @@ const ServiceSchema = new Schema({
         type: String,
         required: true
     },
-    token: {
+    email: {
         type: String,
         required: true
     },
+    secretKey: {
+        type: String,
+    }
 });
 
 const Service = mongoose.model('services', ServiceSchema);
