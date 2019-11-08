@@ -32,7 +32,7 @@ exports.createService = async (req, res) => {
     const model = await newService.save();
     const createdService = changeServiceForResult(model, 'name');
     mailer(body.name, body.email, serviceToken, NEW_TOKEN_MESSAGE);
-    return res.status(200).json({id: createdService.id});
+    return res.status(200).json({id: createdService.id, email: createdService.email});
 };
 
 exports.getServices = async (req, res) => {
