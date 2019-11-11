@@ -25,7 +25,7 @@ exports.getTtnInfo = async (req, res) => {
                 cargoArray.push({
                     number: products.id,
                     name: products.name,
-                    amount: products.amount,
+                    amount: products.availableAmount,
                     packaging: products.dimension
                 })
             }

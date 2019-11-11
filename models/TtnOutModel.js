@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const tthOutScheema = new Schema({
+const tthOutSchema = new Schema({
     number: {
         type: String,
         required: true,
@@ -38,6 +38,6 @@ const tthOutScheema = new Schema({
     },
 });
 
-const tthOut = mongoose.model('ttnOut', tthOutScheema);
+const tthOut = mongoose.model('ttnOut', tthOutSchema);
 
 module.exports = tthOut;
