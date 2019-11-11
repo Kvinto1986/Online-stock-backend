@@ -13,6 +13,7 @@ const senders = require('./routes/senderRoute');
 const managerRoute = require('./routes/managerRoute');
 const servicesRoute = require('./routes/servicesRoute');
 const ttnInfoRoute = require('./routes/ttnInfoRoute');
+const ttnOrderRoute = require('./routes/ttnOrderRoute');
 const warehouseAddressRoute = require('./routes/warehouseAddressRoute');
 
 app.use('/login', login);
@@ -28,6 +29,7 @@ app.use('/ttnsOut', ttnsOut);
 app.use('/managers', managerRoute);
 app.use('/services', servicesRoute);
 app.use('/ttnsInfo', ttnInfoRoute);
+app.use('/ttnOrders', ttnOrderRoute);
 app.use('/warehouseAddress', warehouseAddressRoute);
 
 module.exports = app;

@@ -42,6 +42,7 @@ exports.finishWarehausing = async (req, res) => {
             {$set: {
                 freeArea: totalArea,
                 areas: wareHousingData.areasData,
+
             }},
             {useNewUrlParser: true}
         );
