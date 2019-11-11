@@ -2,7 +2,8 @@ const Employee = require('../models/EmployeeModel');
 const bcrypt = require('bcryptjs');
 const generator = require('generate-password');
 const mailer = require('../utils/mailSender');
-const changeEmployeeForResult=require('../utils/objectNormalizer');
+const {NEW_USER_MESSAGE} = require('../constants/mailMessages');
+const changeEmployeeForResult = require('../utils/objectNormalizer');
 
 exports.createEmployee = async (req, res) => {
     const {body} = req;
@@ -19,7 +20,7 @@ exports.createEmployee = async (req, res) => {
         });
     }
 
-    mailer(body.email, randomPassword);
+    mailer(body.email, body.email, randomPassword, NEW_USER_MESSAGE);
 
     const newEmployee = new Employee({...body, password: randomPassword, company: employeeCompany});
     const salt = await bcrypt.genSalt(10);
@@ -39,7 +40,7 @@ exports.editEmployee = async (req, res) => {
         });
     }
 
-    if(body.password){
+    if (body.password) {
         const salt = await bcrypt.genSalt(10);
         dbEmployee.password = await bcrypt.hash(body.password, salt);
     }
@@ -53,7 +54,7 @@ exports.getEmployees = async (req, res) => {
     const empaloyeeCompany = req.user.company;
     const dbUsers = await Employee.find({company: empaloyeeCompany});
     const employeesList = dbUsers.map((employee) => {
-        return changeEmployeeForResult(employee,'_id')
+        return changeEmployeeForResult(employee, '_id')
     });
     return res.status(200).json(employeesList);
 };

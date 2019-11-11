@@ -2,6 +2,7 @@ const CompanyAdmin = require('../models/CompanyAdminModel');
 const generator = require('generate-password');
 const changeCompanyAdminForResult = require('../utils/objectNormalizer');
 const mailer = require('../utils/mailSender');
+const {NEW_USER_MESSAGE} = require('../constants/mailMessages');
 const bcrypt = require('bcryptjs');
 
 exports.createCompanyAdmin = async (req, res) => {
@@ -26,7 +27,7 @@ exports.createCompanyAdmin = async (req, res) => {
         });
     }
 
-    mailer(body.email, randomPassword);
+    mailer(body.email, body.email, randomPassword, NEW_USER_MESSAGE);
 
     const newCompanyAdmin = new CompanyAdmin({...body, password: randomPassword});
     const salt = await bcrypt.genSalt(10);
