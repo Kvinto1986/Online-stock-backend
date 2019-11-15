@@ -46,6 +46,7 @@ const WarehouseSchema = new Schema({
         type:'String',
         required: true
     },
+    buildImg: String 
 });
 
 const Warehouse = mongoose.model('warehouses', WarehouseSchema);
