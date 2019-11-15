@@ -31,6 +31,12 @@ const tthScheema = new Schema({
         type: Object,
         required: true
     },
+    initialProducts: {
+        type: Array,
+    },
+    controller: {
+        type: String,
+    },
     driver: {
         type: Object,
         required: true
