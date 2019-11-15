@@ -10,7 +10,7 @@ function mailer(name, email, value, MESSAGE) {
     });
 
     const mailOptions = {
-        from: 'managerJohnSnow@gmail.com',
+        from: 'ltr24650@gmail.com',
         to: email,
         subject: 'Notification from "Warehouse-online"',
         html: MESSAGE(name, value)
