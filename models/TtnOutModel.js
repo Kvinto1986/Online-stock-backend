@@ -19,7 +19,8 @@ const tthOutSchema = new Schema({
         required: true
     },
     registrar: {
-        type: Object
+        type: Object,
+        required: true
     },
     driver: {
         type: Object,
@@ -36,6 +37,7 @@ const tthOutSchema = new Schema({
     description: {
         type: String,
     },
+
 });
 
 const tthOut = mongoose.model('ttnOut', tthOutSchema);

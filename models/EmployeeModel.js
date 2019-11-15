@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const Users = require('./UsersBaseModel');
 
 module.exports = Users.discriminator('employee', new mongoose.Schema({

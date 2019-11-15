@@ -10,16 +10,20 @@ exports.createTTN = async (req, res) => {
             number: 'TTN number name already exists'
         });
     }
+    body.products.forEach(elem => {
+        elem.availableAmount = elem.amount;
+        elem.type = elem.package
+    });
 
     const newTTN = new TTN({...body});
     const model = await newTTN.save();
-    const createdTTN = changeTTNForResult(model,'number');
+    const createdTTN = changeTTNForResult(model, 'number');
     return res.status(200).json(createdTTN);
 
 };
 
 exports.getTTN = async (req, res) => {
-    const dbTTN = await TTN.findOne({number: req.params.id, warehouseCompany:req.user.company});
+    const dbTTN = await TTN.findOne({number: req.params.id, warehouseCompany: req.user.company});
 
     if (!dbTTN) {
         return res.status(400).json({
@@ -27,13 +31,13 @@ exports.getTTN = async (req, res) => {
         });
     }
 
-    const foundTTN = changeTTNForResult(dbTTN,'number');
+    const foundTTN = changeTTNForResult(dbTTN, 'number');
     return res.status(200).json(foundTTN);
 };
 
 exports.editTTN = async (req, res) => {
     const {body} = req;
-    const dbTTN = await TTN.findOneAndUpdate({number : req.params.id}, body, {new: true});
+    const dbTTN = await TTN.findOneAndUpdate({number: req.params.id}, body, {new: true});
 
     if (!dbTTN) {
         return res.status(400).json({
@@ -42,13 +46,13 @@ exports.editTTN = async (req, res) => {
     }
 
     const model = await dbTTN.save();
-    const editedTTN = changeTTNForResult(model,'number');
+    const editedTTN = changeTTNForResult(model, 'number');
     return res.status(200).json(editedTTN);
 };
 
 exports.deleteTTN = async (req, res) => {
-    const dbTTN = await TTN.findOne({number:req.params.id});
+    const dbTTN = await TTN.findOne({number: req.params.id});
     const deletedTTN = await dbTTN.remove();
-    const model = changeTTNForResult(deletedTTN,'unp');
+    const model = changeTTNForResult(deletedTTN, 'unp');
     return res.status(200).json(model);
 };

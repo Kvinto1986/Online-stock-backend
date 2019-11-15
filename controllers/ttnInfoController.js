@@ -26,7 +26,7 @@ exports.getTtnInfo = async (req, res) => {
                     number: products.id,
                     name: products.name,
                     amount: products.availableAmount,
-                    packaging: products.dimension
+                    packaging: products.package
                 })
             }
         })

@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
-const options = require('./modelOptions');
+const options = require('./usersModelOptions');
 
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
     },
-
     company: {
         type: String,
         required: true,
