@@ -45,7 +45,7 @@ const WarehouseSchema = new Schema({
     address:{
         type:'String',
         required: true
-    }
+    },
 });
 
 const Warehouse = mongoose.model('warehouses', WarehouseSchema);

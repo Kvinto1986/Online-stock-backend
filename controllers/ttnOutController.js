@@ -1,5 +1,6 @@
 const TTNOut = require('../models/TtnOutModel');
 const TTN = require('../models/TtnModel');
+const TTNOrder = require('../models/TtnExportModel');
 const Warehouse = require('../models/WarehouseModel');
 const changeTtnOutForResult = require('../utils/objectNormalizer');
 
@@ -19,7 +20,7 @@ exports.createTtn = async (req, res) => {
 
     if (!dbTTN) {
         return res.status(400).json({
-            error: `Warehouse not found`
+            error: `Ttn not found`
         });
     }
     const warehouseID = dbTTN.warehouseID;
@@ -31,6 +32,12 @@ exports.createTtn = async (req, res) => {
         });
     }
 
+    const dbTTNOrder = await TTNOrder.findOne({number: body.number});
+    if (dbTTNOrder) {
+        const dbTTNOrderModel = await TTNOrder.findOneAndUpdate({number: body.number}, {status: 'completed'}, {new: true});
+        await dbTTNOrderModel.save();
+    }
+
     const ttnProducts = body.products;
     const warehouseAreas = dbWarehouse.areas;
     const warehouseProductsArray = [];
@@ -39,11 +46,11 @@ exports.createTtn = async (req, res) => {
 
     warehouseProducts.forEach(elem => {
         elem.products.forEach(product =>
-            warehouseProductsArray.push(JSON.stringify({ttn: product.ttnNumber, name: product.name})))
+            warehouseProductsArray.push(product.id))
     });
 
     const ttnProductsArray = ttnProducts.map(elem => {
-        return JSON.stringify({ttn: elem.ttnNumber, name: elem.name})
+        return elem.id
     });
 
     let boolFind = true;
@@ -52,7 +59,7 @@ exports.createTtn = async (req, res) => {
     ttnProductsArray.forEach(elem => {
         if (!warehouseProductsArray.includes(elem)) {
             boolFind = false;
-            warehouseError = `No product data found in warehouse, error in ttn №${JSON.parse(elem).ttn}, product: ${JSON.parse(elem).name}`
+            warehouseError = `No product data found in warehouse, error in ttn product number: ${elem}`
         }
     });
 
@@ -68,7 +75,7 @@ exports.createTtn = async (req, res) => {
         warehouseAreas.forEach((area, areaIndex) => {
             if (area.products.length > 0) {
                 area.products.forEach((product, productIndex) => {
-                    if (ttnProduct.ttnNumber === product.ttnNumber && ttnProduct.name === product.name) {
+                    if (ttnProduct.ttnNumber === product.ttnNumber && ttnProduct.id === product.id) {
                         const productObject = {
                             name: ttnProduct.name,
                             ttnNumber: ttnProduct.ttnNumber,

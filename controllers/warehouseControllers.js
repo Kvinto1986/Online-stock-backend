@@ -43,7 +43,7 @@ exports.getWarehouses = async (req, res) => {
 };
 
 exports.getWarehouse = async (req, res) => {
-    const dbWarehouse = await Warehouse.findById(req.params.id);
+    const dbWarehouse = await Warehouse.findOne({license:req.params.id});
     if (!dbWarehouse) {
         return res.status(400).json({
             warehouse: 'Warehouse not found'
