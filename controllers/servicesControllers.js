@@ -70,7 +70,7 @@ exports.editService = async (req, res) => {
 
     const model = await dbService.save();
     mailer(data.name, data.email, serviceToken, REFRESH_TOKEN_MESSAGE);
-    return res.status(200).json({id: model.name});
+    return res.status(200).json({id: model.name, email: model.email});
 };
 
 exports.deleteService = async (req, res) => {
