@@ -1,4 +1,5 @@
 const TTN = require('../models/TtnModel');
+const TTNOrder = require('../models/TtnImportModel');
 const changeTTNForResult = require('../utils/objectNormalizer');
 
 exports.createTTN = async (req, res) => {
@@ -10,6 +11,13 @@ exports.createTTN = async (req, res) => {
             number: 'TTN number name already exists'
         });
     }
+
+    const dbTTNOrder = await TTNOrder.findOne({number: body.number});
+    if (dbTTNOrder) {
+        const dbTTNOrderModel = await TTNOrder.findOneAndUpdate({number: body.number}, {status: 'completed'}, {new: true});
+        await dbTTNOrderModel.save();
+    }
+
     body.products.forEach(elem => {
         elem.availableAmount = elem.amount;
         elem.type = elem.package

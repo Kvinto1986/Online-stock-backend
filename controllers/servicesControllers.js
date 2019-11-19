@@ -67,7 +67,6 @@ exports.editService = async (req, res) => {
     data.secretKey = await bcrypt.hash(data.secretKey, salt);
 
     const dbService = await Service.findOneAndUpdate({name: req.params.id}, data, {new: true});
-
     const model = await dbService.save();
     mailer(data.name, data.email, serviceToken, REFRESH_TOKEN_MESSAGE);
     return res.status(200).json({id: model.name});
