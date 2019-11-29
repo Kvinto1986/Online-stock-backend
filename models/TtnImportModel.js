@@ -3,8 +3,11 @@ const mongoose = require('mongoose');
 const Orders = require('./expectedTtnsBaseModel');
 
 module.exports = Orders.discriminator('import', new mongoose.Schema({
-    status: {
+    ownerInfo: {
         type: String,
-        default: 'pending'
+        required: true
+    },
+    service: {
+        type: String,
     }
 },));

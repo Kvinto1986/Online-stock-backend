@@ -6,8 +6,4 @@ module.exports = Orders.discriminator('export', new mongoose.Schema({
         type: Date,
         required: true
     },
-    status: {
-        type: String,
-        default: 'pending'
-    }
 },));
