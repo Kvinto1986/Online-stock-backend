@@ -17,7 +17,15 @@ const orderSchema = new mongoose.Schema({
     cargo: {
         type: Array,
         required: true
-    }
+    },
+    status: {
+        type: String,
+        default: 'pending'
+    },
+    carNumber: {
+        type: String,
+        required: true
+    },
 }, options);
 
 module.exports = mongoose.model('Orders', orderSchema);

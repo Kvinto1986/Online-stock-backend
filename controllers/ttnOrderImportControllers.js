@@ -19,7 +19,9 @@ exports.createOrder = async (req, res) => {
         });
     }
 
+
     const newTTNOrder = new TTNOrder({...body});
+    newTTNOrder.service = req.service.name;
     const TTNOrderModel = await newTTNOrder.save();
     const createdTTN = changeTtnOrderForResult(TTNOrderModel, 'number');
     return res.status(200).json(createdTTN);
