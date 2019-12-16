@@ -7,9 +7,13 @@ const Service = require('./models/ServiceModel');
 const opts = {};
 
 opts.jwtFromRequest = ExtractJWT.fromAuthHeaderAsBearerToken();
+// TODO: Creat .env
 opts.secretOrKey = 'secret';
+opts.secretOrKeyBOT = 'ytochka';
 
 passport.use(new JWTStrategy(opts, (jwt_payload, done) => {
+    
+    
     if (jwt_payload.id) {
         User.findOne({_id: jwt_payload.id})
             .then(user => {

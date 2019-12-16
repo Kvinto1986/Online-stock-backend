@@ -16,6 +16,7 @@ const ttnInfoRoute = require('./routes/ttnInfoRoute');
 const ttnExportOrderRoute = require('./routes/ttnExportOrderRoute');
 const ttnImportOrderRoute = require('./routes/ttnImportOrderRoute');
 const warehouseAddressRoute = require('./routes/warehouseAddressRoute');
+const warehouseToSideService = require('./routes/warehouseToSideService');
 
 app.use('/login', login);
 app.use('/employees', employees);
@@ -33,5 +34,6 @@ app.use('/ttnsInfo', ttnInfoRoute);
 app.use('/ttnExportOrders', ttnExportOrderRoute);
 app.use('/ttnImportOrders', ttnImportOrderRoute);
 app.use('/warehouseAddress', warehouseAddressRoute);
+app.use('/warehouseToSideService', warehouseToSideService);
 
 module.exports = app;
