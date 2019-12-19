@@ -20,6 +20,21 @@ exports.createEmployee = async (req, res) => {
         });
     }
 
+
+    if(body.dateOfBirth === "1970-01-01" ) {
+
+        return res.status(400).json({
+            date: 'this field is required'
+        });
+    }
+
+    if(!body.position.length) {
+        return res.status(400).json({
+            role: 'this field is required'
+        });
+    }
+
+
     mailer(body.email, body.email, randomPassword, NEW_USER_MESSAGE);
 
     const newEmployee = new Employee({...body, password: randomPassword, company: employeeCompany});

@@ -41,7 +41,7 @@ module.exports = Users.discriminator('employee', new mongoose.Schema({
         required: true
     },
     avatar:{
-    type:String,
+        type:String,
     },
 },));
 
