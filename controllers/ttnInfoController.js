@@ -22,12 +22,22 @@ exports.getTtnInfo = async (req, res) => {
     dbWarehouse.areas.forEach(area => {
         area.products.forEach(products => {
             if (products.ttnNumber === ttnNumber) {
-                cargoArray.push({
-                    number: products.id,
-                    name: products.name,
-                    amount: products.availableAmount,
-                    packaging: products.package
+                let bool=false;
+                cargoArray.forEach(elem => {
+                    if (elem.number === products.id) {
+                        elem.amount += products.availableAmount;
+                        bool=true;
+                    }
                 })
+                if(!bool){
+                    cargoArray.push({
+                        number: products.id,
+                        name: products.name,
+                        amount: products.availableAmount,
+                        packaging: products.package
+                    })
+                }
+
             }
         })
     });
