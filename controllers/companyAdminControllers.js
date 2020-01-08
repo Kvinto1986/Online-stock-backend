@@ -39,7 +39,7 @@ exports.createCompanyAdmin = async (req, res) => {
 
 exports.editCompanyAdmin = async (req, res) => {
     const {body} = req;
-    const dbCompanyAdmin = await CompanyAdmin.findOneAndUpdate({_id: req.params.id}, body, {new: true});
+    const dbCompanyAdmin = await CompanyAdmin.findOneAndUpdate({email: req.params.id}, body, {new: true});
 
     if (!dbCompanyAdmin) {
         return res.status(400).json({
