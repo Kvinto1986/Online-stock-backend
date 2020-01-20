@@ -67,23 +67,23 @@ exports.getOrder = async (req, res) => {
     @ responce        [Array]   - sorted task list
 */
 exports.taskTableSorter = (req, res) => {
-    const { data, sortByFieldName, isDesc } = req.data
-    let responce 
+    const { data, sortByFieldName, isDesc } = req.data;
+    let responce ;
     
     switch (sortByFieldName) {
         case 'timeOut':
-            responce = dataSorterByDate(data, sortByFieldName, isDesc, false)
+            responce = dataSorterByDate(data, sortByFieldName, isDesc, false);
             break;
         case 'dataOfRegistration', 'deadlineData':
-            responce = dataSorterByDate(data, sortByFieldName, isDesc, true)
+            responce = dataSorterByDate(data, sortByFieldName, isDesc, true);
             break;
         default:
-            responce = data
+            responce = data;
             break;
     }
 
     return res.status(200).json({responce, isDesc});
-}
+};
 
 //  Sub-functions  //
 /*
@@ -110,4 +110,4 @@ const dataSorterByDate = (data, sortByFieldName, isDesc, isDateFormat) => {
             : Date.parse(a[sortByFieldName]) > Date.parse(b[sortByFieldName])
         )
     }
-}
+};
