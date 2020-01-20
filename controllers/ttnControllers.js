@@ -120,12 +120,15 @@ exports.getEachDataOut = async (req, res) => {
             timeOut = moment.utc(moment(then.toString(),"DD/MM/YYYY HH:mm:ss").diff(moment(now,"DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss")
         }
 
+        const isHotTask = Date.parse(`01/01/2011 ${timeOut}`) < Date.parse('01/01/2011 01:00:00')
+
         dbTTN[index] = {
             number: currentData.number,
             carNumber: currentData.carNumber,
             dateOfRegistration:  moment(currentData.dataOfRegistration).format('DD/MM/YYYY'),
             deadlineData: moment(dbTTN[index].deadlineData).format('DD/MM/YYYY'),
             timeOut,
+            isHotTask,
         }
     }
     

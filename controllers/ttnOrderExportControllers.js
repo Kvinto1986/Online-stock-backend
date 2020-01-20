@@ -55,3 +55,59 @@ exports.getOrder = async (req, res) => {
     const orders = changeTtnOrderForResult(dbTtnOrders, 'number');
     return res.status(200).json(orders);
 };
+
+
+/*
+    Request body:
+    @ data            [Array]   - task list
+    @ sortByFieldName [String]  - db field name
+    @ isDesc          [Boolean] - is DESC-based sort or ASC-based
+
+    Response:
+    @ responce        [Array]   - sorted task list
+*/
+exports.taskTableSorter = (req, res) => {
+    const { data, sortByFieldName, isDesc } = req.data
+    let responce 
+    
+    switch (sortByFieldName) {
+        case 'timeOut':
+            responce = dataSorterByDate(data, sortByFieldName, isDesc, false)
+            break;
+        case 'dataOfRegistration', 'deadlineData':
+            responce = dataSorterByDate(data, sortByFieldName, isDesc, true)
+            break;
+        default:
+            responce = data
+            break;
+    }
+
+    return res.status(200).json({responce, isDesc});
+}
+
+//  Sub-functions  //
+/*
+    taskTableSorter - dataSorterByDate
+
+    Params:
+    @ data            [Array]   - task list
+    @ sortByFieldName [String]  - db field name
+    @ isDesc          [Boolean] - is DESC-based sort or ASC-based
+    @ isDateFormat    [Boolean] - is date instance of Date
+
+    Return:
+    @ [Array] - sorted array of ttns with dates data
+*/
+const dataSorterByDate = (data, sortByFieldName, isDesc, isDateFormat) => {
+    if (isDateFormat) {
+        return data.sort((a, b) => isDesc
+            ? Date.parse(`01/01/2011 ${a[sortByFieldName]}`) < Date.parse(`01/01/2011 ${b[sortByFieldName]}`)
+            : Date.parse(`01/01/2011 ${a[sortByFieldName]}`) > Date.parse(`01/01/2011 ${b[sortByFieldName]}`)
+        )
+    } else {
+        return data.sort((a, b) => isDesc
+            ? Date.parse(a[sortByFieldName]) < Date.parse(b[sortByFieldName])
+            : Date.parse(a[sortByFieldName]) > Date.parse(b[sortByFieldName])
+        )
+    }
+}
