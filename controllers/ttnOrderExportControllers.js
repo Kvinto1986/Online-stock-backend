@@ -1,6 +1,7 @@
 const TTNOrder = require('../models/TtnExportModel');
 const Warehouse = require('../models/WarehouseModel');
 const changeTtnOrderForResult = require('../utils/objectNormalizer');
+const moment = require('moment');
 
 exports.createOrder = async (req, res) => {
     const {body} = req;
@@ -56,33 +57,36 @@ exports.getOrder = async (req, res) => {
     return res.status(200).json(orders);
 };
 
-
 /*
     Request body:
     @ data            [Array]   - task list
-    @ sortByFieldName [String]  - db field name
+    @ sortByFieldName [String]  - sorted field
     @ isDesc          [Boolean] - is DESC-based sort or ASC-based
 
     Response:
-    @ responce        [Array]   - sorted task list
+    @ response        [Array]   - sorted task list
 */
 exports.taskTableSorter = (req, res) => {
-    const { data, sortByFieldName, isDesc } = req.data;
-    let responce ;
+    const { data, sortByFieldName, isDesc } = req.body;
+    let response
+    // console.log(sortByFieldName);
     
     switch (sortByFieldName) {
         case 'timeOut':
-            responce = dataSorterByDate(data, sortByFieldName, isDesc, false);
+            response = dataSorterByDate(data, sortByFieldName, isDesc, false);
             break;
-        case 'dataOfRegistration', 'deadlineData':
-            responce = dataSorterByDate(data, sortByFieldName, isDesc, true);
+        case 'deadlineData':
+            response = dataSorterByDate(data, sortByFieldName, isDesc, true);
+            break;
+        case 'dateOfRegistration':
+            response = dataSorterByDate(data, sortByFieldName, isDesc, true);
             break;
         default:
-            responce = data;
+            response = data;
             break;
     }
 
-    return res.status(200).json({responce, isDesc});
+    return res.status(200).json({response, isDesc});
 };
 
 //  Sub-functions  //
@@ -93,21 +97,25 @@ exports.taskTableSorter = (req, res) => {
     @ data            [Array]   - task list
     @ sortByFieldName [String]  - db field name
     @ isDesc          [Boolean] - is DESC-based sort or ASC-based
-    @ isDateFormat    [Boolean] - is date instance of Date
+    @ isMonthFormat    [Boolean] - is date consits a month
 
     Return:
     @ [Array] - sorted array of ttns with dates data
 */
-const dataSorterByDate = (data, sortByFieldName, isDesc, isDateFormat) => {
-    if (isDateFormat) {
+const dataSorterByDate = (data, sortByFieldName, isDesc, isMonthFormat) => {
+    const getTimeFromMomentDate = (momentDate) => {
+        return moment(momentDate, "DD/MM/YYYY").toDate().getTime()
+    }
+
+    if (isMonthFormat) {
         return data.sort((a, b) => isDesc
-            ? Date.parse(`01/01/2011 ${a[sortByFieldName]}`) < Date.parse(`01/01/2011 ${b[sortByFieldName]}`)
-            : Date.parse(`01/01/2011 ${a[sortByFieldName]}`) > Date.parse(`01/01/2011 ${b[sortByFieldName]}`)
+            ? getTimeFromMomentDate(a[sortByFieldName]) < getTimeFromMomentDate(b[sortByFieldName])
+            : getTimeFromMomentDate(a[sortByFieldName]) > getTimeFromMomentDate(b[sortByFieldName])
         )
     } else {
         return data.sort((a, b) => isDesc
-            ? Date.parse(a[sortByFieldName]) < Date.parse(b[sortByFieldName])
-            : Date.parse(a[sortByFieldName]) > Date.parse(b[sortByFieldName])
+            ? Date.parse(`01/01/2011 ${a[sortByFieldName]}`) < Date.parse(`01/01/2011 ${b[sortByFieldName]}`)
+            : Date.parse(`01/01/2011 ${a[sortByFieldName]}`) > Date.parse(`01/01/2011 ${b[sortByFieldName]}`)
         )
     }
 };
