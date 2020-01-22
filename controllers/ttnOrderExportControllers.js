@@ -69,7 +69,6 @@ exports.getOrder = async (req, res) => {
 exports.taskTableSorter = (req, res) => {
     const { data, sortByFieldName, isDesc } = req.body;
     let response
-    // console.log(sortByFieldName);
     
     switch (sortByFieldName) {
         case 'timeOut':
