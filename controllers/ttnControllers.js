@@ -120,16 +120,26 @@ exports.getEachDataOut = async (req, res) => {
             timeOut = moment.utc(moment(then.toString(),"DD/MM/YYYY HH:mm:ss").diff(moment(now,"DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss")
         }
 
+        const isHotTask = Date.parse(`01/01/2011 ${timeOut}`) < Date.parse('01/01/2011 01:00:00')
+
         dbTTN[index] = {
             number: currentData.number,
             carNumber: currentData.carNumber,
             dateOfRegistration:  moment(currentData.dataOfRegistration).format('DD/MM/YYYY'),
             deadlineData: moment(dbTTN[index].deadlineData).format('DD/MM/YYYY'),
             timeOut,
+            isHotTask,
         }
     }
     
-    const response = dbTTN.sort((a, b) => a.timeOut.localeCompare(b.timeOut))
+    const getTimeOut = (timeOut) => {
+        const now = new Date()
+        return timeOut.indexOf('day') == -1
+            ? Date.parse(`01/01/2011 ${timeOut}`)
+            : now.setTime(now.getTime() + (timeOut.slice(0, timeOut.indexOf('day') - 1) * 24 * 60 * 60 * 1000))
+    }
+
+    const response = dbTTN.sort((a, b) => getTimeOut(a.timeOut) > getTimeOut(b.timeOut))
 
     return res.status(200).json(response);
 }

@@ -1,6 +1,7 @@
 const TTNOrder = require('../models/TtnExportModel');
 const Warehouse = require('../models/WarehouseModel');
 const changeTtnOrderForResult = require('../utils/objectNormalizer');
+const moment = require('moment');
 
 exports.createOrder = async (req, res) => {
     const {body} = req;
@@ -54,4 +55,74 @@ exports.getOrder = async (req, res) => {
 
     const orders = changeTtnOrderForResult(dbTtnOrders, 'number');
     return res.status(200).json(orders);
+};
+
+/*
+    Request body:
+    @ data            [Array]   - task list
+    @ sortByFieldName [String]  - sorted field
+    @ isDesc          [Boolean] - is DESC-based sort or ASC-based
+
+    Response:
+    @ response        [Array]   - sorted task list
+*/
+exports.taskTableSorter = (req, res) => {
+    const { data, sortByFieldName, isDesc } = req.body;
+    let response
+    // console.log(sortByFieldName);
+    
+    switch (sortByFieldName) {
+        case 'timeOut':
+            response = dataSorterByDate(data, sortByFieldName, isDesc, false);
+            break;
+        case 'deadlineData':
+            response = dataSorterByDate(data, sortByFieldName, isDesc, true);
+            break;
+        case 'dateOfRegistration':
+            response = dataSorterByDate(data, sortByFieldName, isDesc, true);
+            break;
+        default:
+            response = data;
+            break;
+    }
+
+    return res.status(200).json({response, isDesc});
+};
+
+//  Sub-functions  //
+/*
+    taskTableSorter - dataSorterByDate
+
+    Params:
+    @ data            [Array]   - task list
+    @ sortByFieldName [String]  - db field name
+    @ isDesc          [Boolean] - is DESC-based sort or ASC-based
+    @ isMonthFormat    [Boolean] - is date consits a month
+
+    Return:
+    @ [Array] - sorted array of ttns with dates data
+*/
+const dataSorterByDate = (data, sortByFieldName, isDesc, isMonthFormat) => {
+    const getTimeFromMomentDate = (momentDate) => {
+        return moment(momentDate, "DD/MM/YYYY").toDate().getTime()
+    }
+
+    const getTimeOut = (timeOut) => {
+        const now = new Date()
+        return timeOut.indexOf('day') == -1
+            ? Date.parse(`01/01/2011 ${timeOut}`)
+            : now.setTime(now.getTime() + (timeOut.slice(0, timeOut.indexOf('day') - 1) * 24 * 60 * 60 * 1000))
+    }
+
+    if (isMonthFormat) {
+        return data.sort((a, b) => isDesc
+            ? getTimeFromMomentDate(a[sortByFieldName]) < getTimeFromMomentDate(b[sortByFieldName])
+            : getTimeFromMomentDate(a[sortByFieldName]) > getTimeFromMomentDate(b[sortByFieldName])
+        )
+    } else {
+        return data.sort((a, b) => isDesc
+            ? getTimeOut(a[sortByFieldName]) < getTimeOut(b[sortByFieldName])
+            : getTimeOut(a[sortByFieldName]) > getTimeOut(b[sortByFieldName])
+        )
+    }
 };
