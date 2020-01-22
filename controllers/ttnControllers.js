@@ -132,7 +132,14 @@ exports.getEachDataOut = async (req, res) => {
         }
     }
     
-    const response = dbTTN.sort((a, b) => a.timeOut.localeCompare(b.timeOut))
+    const getTimeOut = (timeOut) => {
+        const now = new Date()
+        return timeOut.indexOf('day') == -1
+            ? Date.parse(`01/01/2011 ${timeOut}`)
+            : now.setTime(now.getTime() + (timeOut.slice(0, timeOut.indexOf('day') - 1) * 24 * 60 * 60 * 1000))
+    }
+
+    const response = dbTTN.sort((a, b) => getTimeOut(a.timeOut) > getTimeOut(b.timeOut))
 
     return res.status(200).json(response);
 }

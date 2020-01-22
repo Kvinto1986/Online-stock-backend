@@ -107,6 +107,13 @@ const dataSorterByDate = (data, sortByFieldName, isDesc, isMonthFormat) => {
         return moment(momentDate, "DD/MM/YYYY").toDate().getTime()
     }
 
+    const getTimeOut = (timeOut) => {
+        const now = new Date()
+        return timeOut.indexOf('day') == -1
+            ? Date.parse(`01/01/2011 ${timeOut}`)
+            : now.setTime(now.getTime() + (timeOut.slice(0, timeOut.indexOf('day') - 1) * 24 * 60 * 60 * 1000))
+    }
+
     if (isMonthFormat) {
         return data.sort((a, b) => isDesc
             ? getTimeFromMomentDate(a[sortByFieldName]) < getTimeFromMomentDate(b[sortByFieldName])
@@ -114,8 +121,8 @@ const dataSorterByDate = (data, sortByFieldName, isDesc, isMonthFormat) => {
         )
     } else {
         return data.sort((a, b) => isDesc
-            ? Date.parse(`01/01/2011 ${a[sortByFieldName]}`) < Date.parse(`01/01/2011 ${b[sortByFieldName]}`)
-            : Date.parse(`01/01/2011 ${a[sortByFieldName]}`) > Date.parse(`01/01/2011 ${b[sortByFieldName]}`)
+            ? getTimeOut(a[sortByFieldName]) < getTimeOut(b[sortByFieldName])
+            : getTimeOut(a[sortByFieldName]) > getTimeOut(b[sortByFieldName])
         )
     }
 };
