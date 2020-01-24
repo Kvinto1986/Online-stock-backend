@@ -43,7 +43,7 @@ exports.getCarrier = async (req, res) => {
     const dbCarrier = await Carrier.findOne({unp: req.params.id});
     if (!dbCarrier) {
         return res.status(400).json({
-            carrier: 'A carrier with such a UNP was not found, maybe you made a mistake or want to add a new one ?'
+            carrier: "Carrier not found"
         });
     }
 

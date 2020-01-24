@@ -31,7 +31,7 @@ exports.getOrder = async (req, res) => {
     const dbTtnOrders = await TTNOrder.findOne({number: req.params.id});
     if (!dbTtnOrders) {
         return res.status(400).json({
-            order: 'There\'s no such TTN (you can create the data yourself)'
+            order: 'TTN not found'
         });
     }
 
