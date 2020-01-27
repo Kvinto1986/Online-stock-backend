@@ -66,8 +66,7 @@ exports.editEmployee = async (req, res) => {
 };
 
 exports.getEmployees = async (req, res) => {
-    const empaloyeeCompany = req.user.company;
-    const dbUsers = await Employee.find({company: empaloyeeCompany});
+    const dbUsers = await Employee.find();
     const employeesList = dbUsers.map((employee) => {
         return changeEmployeeForResult(employee, '_id')
     });

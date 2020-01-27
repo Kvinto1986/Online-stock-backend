@@ -7,7 +7,7 @@ const {createEmployee, editEmployee, getEmployees, getEmployee, deleteEmployee} 
 router.post('', auth.AUTH([COMPANY_ADMIN]), createEmployee);
 router.post('/:id', auth.AUTH([COMPANY_ADMIN, EMPLOYEE], [EMPLOYEE_CONTROLLER,
     EMPLOYEE_OPERATOR, EMPLOYEE_MANAGER]), editEmployee);
-router.get('', auth.AUTH([COMPANY_ADMIN]), getEmployees);
+router.get('', getEmployees);
 router.get('/:id', auth.AUTH([COMPANY_ADMIN, EMPLOYEE], [EMPLOYEE_CONTROLLER,
     EMPLOYEE_OPERATOR, EMPLOYEE_MANAGER]), getEmployee);
 router.delete('/:id', auth.AUTH([COMPANY_ADMIN]), deleteEmployee);
