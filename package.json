@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon cluster.js"
   },
   "dependencies": {
     "autocannon": "^4.4.2",
@@ -27,6 +27,7 @@
     "node-cron": "^2.0.3",
     "nodemailer": "^6.3.0",
     "nodemon": "^1.19.1",
+    "os": "^0.1.1",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "select": "^1.1.2",
